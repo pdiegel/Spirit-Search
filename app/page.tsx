@@ -12,7 +12,10 @@ export default function Home() {
       },
     })
       .then((res) => res.json())
-      .then((data) => setApiData(data));
+      .then((data) => {
+        console.log(data);
+        setApiData(data);
+      });
   }, []);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
