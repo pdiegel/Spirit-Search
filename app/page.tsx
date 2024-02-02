@@ -6,7 +6,7 @@ export default function Home() {
   const [apiData, setApiData] = useState(null);
   useEffect(() => {
     fetch("/api", {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
