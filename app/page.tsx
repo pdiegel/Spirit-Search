@@ -3,7 +3,7 @@ import DropDownSelector from "@/components/dropDownSelector";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [apiData, setApiData] = useState(null);
+  const [apiData, setApiData] = useState({} as any);
   useEffect(() => {
     fetch("/api", {
       method: "GET",
@@ -16,7 +16,7 @@ export default function Home() {
   }, []);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <p>{apiData}</p>
+      <p>{apiData && apiData.message}</p>
     </main>
   );
 }
