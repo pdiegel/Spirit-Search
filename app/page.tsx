@@ -23,7 +23,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <p>{apiData && apiData.message}</p>
-      <a href="/api/auth/login">Login</a>
+      {!user && <a href="/api/auth/login">Login</a>}
+      {user && <a href="/api/auth/logout">Logout</a>}
     </main>
   );
 }
