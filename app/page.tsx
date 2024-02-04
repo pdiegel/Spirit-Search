@@ -20,11 +20,18 @@ export default function Home() {
         setApiData(data);
       });
   }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <p>{apiData && apiData.message}</p>
-      {!user && <a href="/api/auth/login">Login</a>}
-      {user && <a href="/api/auth/logout">Logout</a>}
+
+      {user ? (
+        <a href="/api/auth/logout">Logout</a>
+      ) : (
+        <a href="/api/auth/login">Login</a>
+      )}
     </main>
   );
 }
