@@ -17,9 +17,9 @@ export default function DropDownSelector({
       </button>
       <motion.div
         initial={{ x: "-100vw" }}
-        animate={{ x: isOpen ? 0 : "-100vw" }}
+        animate={{ x: isOpen ? 0 : "-120vw" }}
         transition={{ duration: 0.4 }}
-        className={`flex flex-col p-4 bg-primary fixed left-0 top-0 h-full w-96 z-10 shadow-2xl gap-4`}
+        className={`flex flex-col p-4 bg-primary fixed left-0 top-0 h-full w-60 z-10 shadow-2xl gap-4`}
       >
         <button
           className="self-start text-2xl w-8, h-8 p-2"
