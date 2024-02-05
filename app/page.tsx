@@ -23,8 +23,9 @@ export default function Home() {
 
   if (isLoading) return <div>Loading...</div>;
 
+  if (user) console.log(user);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-accent text-text">
       <p>{apiData && apiData.message}</p>
 
       {user ? (

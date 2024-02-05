@@ -1,21 +1,34 @@
 "use client";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function DropDownSelector({
-  label,
+  icon,
   children,
 }: {
-  label: string;
+  icon: string;
   children: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div>
-      <button className="p-4" onClick={() => setIsOpen(!isOpen)}>
-        {label}
-        <span>X</span>
+    <div className="text-text">
+      <button className="text-2xl" onClick={() => setIsOpen(!isOpen)}>
+        <span>{icon}</span>
       </button>
-      <div className={`${isOpen ? "hidden" : ""}`}>{children}</div>
+      <motion.div
+        initial={{ x: "-100vw" }}
+        animate={{ x: isOpen ? 0 : "-100vw" }}
+        transition={{ duration: 0.4 }}
+        className={`flex flex-col p-4 bg-primary fixed left-0 top-0 h-full w-96 z-10 shadow-2xl gap-4`}
+      >
+        <button
+          className="self-start text-2xl w-8, h-8 p-2"
+          onClick={() => setIsOpen(false)}
+        >
+          X
+        </button>
+        {children}
+      </motion.div>
     </div>
   );
 }
