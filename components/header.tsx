@@ -46,7 +46,7 @@ export default function Header() {
       </div>
       <div className="sm:hidden">
         <DropDownSelector icon="☰">
-          <a href="/search">Search</a>
+          <a href="/">Search</a>
           <a href="/about">About</a>
           {userLinks}
         </DropDownSelector>

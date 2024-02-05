@@ -3,6 +3,7 @@ import DropDownSelector from "@/components/dropDownSelector";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as any);
@@ -49,13 +50,15 @@ export default function Home() {
                   <h2 className="text-xl font-bold text-center mb-1">
                     {cocktail.strDrink}
                   </h2>
-                  <Image
-                    src={cocktail.strDrinkThumb}
-                    alt={cocktail.strDrink}
-                    height={150}
-                    width={150}
-                    className="rounded-md shadow-md"
-                  ></Image>
+                  <Link href={`/cocktails/${cocktail.idDrink}`}>
+                    <Image
+                      src={cocktail.strDrinkThumb + "/preview"}
+                      alt={cocktail.strDrink}
+                      height={150}
+                      width={150}
+                      className="rounded-md shadow-md"
+                    ></Image>
+                  </Link>
                 </div>
               );
             })}
