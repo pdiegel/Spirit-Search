@@ -20,8 +20,8 @@ export default function Header() {
   const userDisplay = loggedIn && (
     <>
       <Image
-        src={user.picture || ""}
-        alt={user.nickname || "User"}
+        src={user?.picture || ""}
+        alt={user?.nickname || "User"}
         width={50}
         height={50}
         className="rounded-full shadow-md"
