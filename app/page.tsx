@@ -8,6 +8,7 @@ import {
   filterCocktails,
   filterUnusedIngredients,
 } from "@/helpers/cocktailFuncs";
+import Loading from "@/components/loading";
 
 // Multiple of 2, 4 and 7 for a nice grid layout
 const numCocktailsToDisplay = 28;
@@ -63,7 +64,7 @@ export default function Home() {
     setPickedIngredients((prevIngredients) => [...prevIngredients, i]);
   };
 
-  if (isLoading || cocktails.length === 0) return <div>Loading...</div>;
+  if (isLoading || cocktails.length === 0) return <Loading />;
 
   const filteredCocktails = filterCocktails(cocktails, pickedIngredients);
   const filteredIngredients = filterUnusedIngredients(ingredients, cocktails);

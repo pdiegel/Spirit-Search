@@ -2,6 +2,7 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import DropDownSelector from "./dropDownSelector";
+import Link from "next/link";
 
 export default function Header() {
   const { user, error, isLoading } = useUser();
@@ -37,20 +38,22 @@ export default function Header() {
   );
 
   return (
-    <header className="flex-col items-center justify-between p-8 bg-primary text-text">
-      <div className="wrapper">
-        <h1 className="text-3xl font-bold">Spirit Search</h1>
+    <header className="p-8 bg-primary text-text w-full">
+      <div className="wrapper flex items-center justify-between">
+        <div className="sm:hidden">
+          <DropDownSelector icon="☰">
+            <Link href="/">Search</Link>
+            <Link href="/about">About</Link>
+            {userLinks}
+          </DropDownSelector>
+        </div>
+        <Link href="/">
+          <h1 className="text-3xl font-medium tracking-tight">Spirit Search</h1>
+        </Link>
         <div className="flex items-center">
           <nav>{loggedInDisplay}</nav>
 
           {userDisplay}
-        </div>
-        <div className="sm:hidden">
-          <DropDownSelector icon="☰">
-            <a href="/">Search</a>
-            <a href="/about">About</a>
-            {userLinks}
-          </DropDownSelector>
         </div>
       </div>
     </header>

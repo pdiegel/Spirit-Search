@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getNonNullIngredientKeys } from "@/helpers/cocktailFuncs";
+import Loading from "@/components/loading";
 
 // 1 through 15
 
@@ -46,9 +47,7 @@ export default function Page({ params }: { params: { cocktail: string } }) {
   }, [cocktailData, validIngredientKeys]);
 
   if (loading) {
-    return <div>Loading...</div>;
-  } else {
-    console.log(ingredients);
+    return <Loading />;
   }
 
   return (

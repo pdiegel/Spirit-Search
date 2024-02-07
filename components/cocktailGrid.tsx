@@ -10,7 +10,7 @@ export default function CocktailGrid({ cocktails }: { cocktails: any[] }) {
             key={cocktail.idDrink}
             className="self-end rounded-xl p-2 text-center border border-zinc-200 bg-zinc-50"
           >
-            <h2 className="text-center mb-1 w-full text-balance break-words max-w-[140px]">
+            <h2 className="text-center mb-1 w-full text-balance break-words max-w-[140px] font-medium">
               {cocktail.strDrink}
             </h2>
             <Link href={`/cocktails/${cocktail.idDrink}`} className="mx-auto">
