@@ -59,6 +59,7 @@ export default function Page({ params }: { params: { cocktail: string } }) {
         height={250}
         width={250}
         className="rounded-md shadow-md"
+        priority
       />
       <p className="mt-1">{cocktailData.strAlcoholic}</p>
       <div className="w-3/4 mb-4 self-start">

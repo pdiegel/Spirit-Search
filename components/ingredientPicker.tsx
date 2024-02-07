@@ -13,8 +13,9 @@ export default function IngredientPicker({
 }) {
   const [ingredientFilter, setIngredientFilter] = useState("");
 
-  const pickedIngredientsDisplay = pickedIngredients.map(
-    (ingredient, index) => (
+  const pickedIngredientsDisplay = pickedIngredients
+    .sort()
+    .map((ingredient, index) => (
       <motion.button
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -24,10 +25,10 @@ export default function IngredientPicker({
       >
         {ingredient}
       </motion.button>
-    )
-  );
+    ));
 
   const availableIngredientsDisplay = availableIngredients
+    .sort()
     .filter((i) => i.toLowerCase().includes(ingredientFilter.toLowerCase()))
     .filter((i) => !pickedIngredients.includes(i))
     .map((ingredient, index) => (
