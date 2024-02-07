@@ -1,34 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Image from "next/image";
-import Link from "next/link";
 import IngredientPicker from "@/components/ingredientPicker";
-import { toSentenceCase } from "@/helpers/textFuncs";
 import CocktailGrid from "@/components/cocktailGrid";
+import { Cocktail } from "@/interfaces/cocktails";
+import {
+  filterCocktails,
+  filterUnusedIngredients,
+} from "@/helpers/cocktailFuncs";
 
-const numCocktailsToDisplay = 12;
+const numCocktailsToDisplay = 48;
 
 export default function Home() {
-  const [cocktails, setCocktails] = useState([] as any);
+  const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const [ingredients, setIngredients] = useState([] as string[]);
-  const [apiData, setApiData] = useState({} as any);
   const { user, error, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
 
   useEffect(() => {
-    fetch("/api", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setApiData(data);
-      });
-
     fetch("/api/cocktails", {
       method: "GET",
       headers: {
@@ -49,10 +39,18 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        let ingredients = data.drinks.map((i: any) => i.strIngredient1);
+        let ingredients = data.drinks.map((i: Cocktail) => i.strIngredient1);
         setIngredients(ingredients);
       });
   }, []);
+
+  const handlePrevious = () => {
+    setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
+  };
+
+  const handleNext = () => {
+    setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
+  };
 
   const handlePickedIngredients = (i: string) => {
     if (pickedIngredients.includes(i)) {
@@ -66,60 +64,45 @@ export default function Home() {
 
   if (isLoading || cocktails.length === 0) return <div>Loading...</div>;
 
-  const filteredCocktails = cocktails.filter((cocktail: any) => {
-    const cocktailIngredients = Object.keys(cocktail)
-      .filter((key) => key.includes("strIngredient"))
-      .map((key) => cocktail[key]);
-    return pickedIngredients.every((ingredient) =>
-      cocktailIngredients.some((str: string) => {
-        if (!str) {
-          return false;
-        }
-        return str.toLowerCase().includes(ingredient.toLowerCase());
-      })
-    );
-  });
+  const filteredCocktails = filterCocktails(cocktails, pickedIngredients);
+  const filteredIngredients = filterUnusedIngredients(ingredients, cocktails);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full">
-      {ingredients && (
+      {filteredIngredients && (
         <div className="w-full overflow-hidden">
           <IngredientPicker
-            availableIngredients={ingredients}
+            availableIngredients={filteredIngredients}
             pickedIngredients={pickedIngredients}
             onSelection={handlePickedIngredients}
           />
         </div>
       )}
-      <div className="flex flex-wrap items-center gap-2 justify-center">
-        {filteredCocktails.length > 0 && (
-          <CocktailGrid
-            cocktails={filteredCocktails.slice(
-              lowerCocktailIndex,
-              lowerCocktailIndex + numCocktailsToDisplay
-            )}
-          />
-        )}
-      </div>
+
+      {filteredCocktails.length > 0 && (
+        <CocktailGrid
+          cocktails={filteredCocktails.slice(
+            lowerCocktailIndex,
+            lowerCocktailIndex + numCocktailsToDisplay
+          )}
+        />
+      )}
+
       <div className="flex justify-between w-full my-4">
         <button
-          onClick={() => {
-            setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
-          }}
+          onClick={handlePrevious}
           disabled={lowerCocktailIndex < numCocktailsToDisplay}
-          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary p-2 rounded-md"
+          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary p-2 rounded-md text-white"
         >
           Previous
         </button>
         <button
-          onClick={() => {
-            setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
-          }}
+          onClick={handleNext}
           disabled={
             lowerCocktailIndex >
             filteredCocktails.length - numCocktailsToDisplay
           }
-          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary  p-2 rounded-md"
+          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary p-2 rounded-md text-white"
         >
           Next
         </button>
