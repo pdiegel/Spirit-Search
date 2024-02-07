@@ -69,6 +69,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full">
+      {/* Ingredient Picker */}
       {filteredIngredients && (
         <div className="w-full overflow-hidden">
           <IngredientPicker
@@ -79,6 +80,7 @@ export default function Home() {
         </div>
       )}
 
+      {/* Cocktail Grid */}
       {filteredCocktails.length > 0 && (
         <CocktailGrid
           cocktails={filteredCocktails.slice(
@@ -88,6 +90,7 @@ export default function Home() {
         />
       )}
 
+      {/* Pagination buttons */}
       <div className="flex justify-between w-full my-4">
         <button
           onClick={handlePrevious}
