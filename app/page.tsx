@@ -7,7 +7,7 @@ import IngredientPicker from "@/components/ingredientPicker";
 import { toSentenceCase } from "@/helpers/textFuncs";
 import CocktailGrid from "@/components/cocktailGrid";
 
-const numCocktailsToDisplay = 50;
+const numCocktailsToDisplay = 12;
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as any);
@@ -49,7 +49,7 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        const ingredients = data.drinks.map((i: any) => i.strIngredient1);
+        let ingredients = data.drinks.map((i: any) => i.strIngredient1);
         setIngredients(ingredients);
       });
   }, []);
@@ -64,16 +64,21 @@ export default function Home() {
     setPickedIngredients((prevIngredients) => [...prevIngredients, i]);
   };
 
+  if (isLoading || cocktails.length === 0) return <div>Loading...</div>;
+
   const filteredCocktails = cocktails.filter((cocktail: any) => {
     const cocktailIngredients = Object.keys(cocktail)
       .filter((key) => key.includes("strIngredient"))
       .map((key) => cocktail[key]);
     return pickedIngredients.every((ingredient) =>
-      cocktailIngredients.includes(toSentenceCase(ingredient))
+      cocktailIngredients.some((str: string) => {
+        if (!str) {
+          return false;
+        }
+        return str.toLowerCase().includes(ingredient.toLowerCase());
+      })
     );
   });
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full">
@@ -86,7 +91,7 @@ export default function Home() {
           />
         </div>
       )}
-      <div className="flex flex-wrap items-center gap-4 justify-center">
+      <div className="flex flex-wrap items-center gap-2 justify-center">
         {filteredCocktails.length > 0 && (
           <CocktailGrid
             cocktails={filteredCocktails.slice(
