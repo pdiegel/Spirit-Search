@@ -38,18 +38,20 @@ export default function Header() {
 
   return (
     <header className="flex-col items-center justify-between p-8 bg-primary text-text">
-      <h1 className="text-3xl font-bold">Spirit Search</h1>
-      <div className="flex items-center">
-        <nav>{loggedInDisplay}</nav>
+      <div className="wrapper">
+        <h1 className="text-3xl font-bold">Spirit Search</h1>
+        <div className="flex items-center">
+          <nav>{loggedInDisplay}</nav>
 
-        {userDisplay}
-      </div>
-      <div className="sm:hidden">
-        <DropDownSelector icon="☰">
-          <a href="/">Search</a>
-          <a href="/about">About</a>
-          {userLinks}
-        </DropDownSelector>
+          {userDisplay}
+        </div>
+        <div className="sm:hidden">
+          <DropDownSelector icon="☰">
+            <a href="/">Search</a>
+            <a href="/about">About</a>
+            {userLinks}
+          </DropDownSelector>
+        </div>
       </div>
     </header>
   );

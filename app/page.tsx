@@ -9,7 +9,8 @@ import {
   filterUnusedIngredients,
 } from "@/helpers/cocktailFuncs";
 
-const numCocktailsToDisplay = 48;
+// Multiple of 2, 4 and 7 for a nice grid layout
+const numCocktailsToDisplay = 28;
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
@@ -68,7 +69,7 @@ export default function Home() {
   const filteredIngredients = filterUnusedIngredients(ingredients, cocktails);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full">
+    <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full wrapper">
       {/* Ingredient Picker */}
       {filteredIngredients && (
         <div className="w-full overflow-hidden">

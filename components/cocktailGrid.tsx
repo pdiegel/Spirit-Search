@@ -8,9 +8,9 @@ export default function CocktailGrid({ cocktails }: { cocktails: any[] }) {
         return (
           <div
             key={cocktail.idDrink}
-            className="self-end rounded-md p-2 text-center border-2"
+            className="self-end rounded-xl p-2 text-center border border-zinc-200 bg-zinc-50"
           >
-            <h2 className="text-center mb-1 w-full text-balance">
+            <h2 className="text-center mb-1 w-full text-balance break-words max-w-[140px]">
               {cocktail.strDrink}
             </h2>
             <Link href={`/cocktails/${cocktail.idDrink}`} className="mx-auto">
@@ -19,7 +19,7 @@ export default function CocktailGrid({ cocktails }: { cocktails: any[] }) {
                 alt={cocktail.strDrink}
                 height={140}
                 width={140}
-                className="rounded-md shadow-md"
+                className="rounded-xl shadow-md"
               ></Image>
             </Link>
           </div>
