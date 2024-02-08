@@ -3,7 +3,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import DropDownSelector from "./dropDownSelector";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const genericLinks = [
   { href: "/", label: "Search" },
@@ -16,8 +16,8 @@ const loggedInLinks = [
 ];
 
 export default function Header() {
-  const [currentUrl, setCurrentUrl] = useState("");
   const { user, error, isLoading } = useUser();
+  const pathname = usePathname();
 
   const loggedIn = user ? true : false;
 
@@ -52,9 +52,8 @@ export default function Header() {
           key={link.href}
           href={link.href}
           className={`${
-            currentUrl === link.href ? currentLinkStyle : linkStyle
+            pathname === link.href ? currentLinkStyle : linkStyle
           } hover:text-[#333]`}
-          onClick={() => setCurrentUrl(link.href)}
         >
           {link.label}
         </Link>
@@ -66,9 +65,8 @@ export default function Header() {
       key={link.href}
       href={link.href}
       className={`${
-        currentUrl === link.href ? currentLinkStyle : linkStyle
+        pathname === link.href ? currentLinkStyle : linkStyle
       } hover:text-[#333]`}
-      onClick={() => setCurrentUrl(link.href)}
     >
       {link.label}
     </Link>
