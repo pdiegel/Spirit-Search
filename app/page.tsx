@@ -70,7 +70,7 @@ export default function Home() {
   const filteredIngredients = filterUnusedIngredients(ingredients, cocktails);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-accent w-full wrapper">
+    <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
       {/* Ingredient Picker */}
       {filteredIngredients && (
         <div className="w-full overflow-hidden">
