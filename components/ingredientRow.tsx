@@ -1,6 +1,7 @@
 import { Cocktail } from "@/interfaces/cocktails";
 import { Ingredient } from "@/interfaces/ingredient";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function IngredientRow({
   validIngredientKeys,
@@ -21,9 +22,10 @@ export default function IngredientRow({
               cocktailData[key as keyof Cocktail]?.toLowerCase()
           )?.strIngredient;
           return (
-            <div
+            <Link
+              href={`/ingredients/${cocktailData[key as keyof Cocktail]}`}
               key={cocktailData[key as keyof Cocktail]}
-              className="h-min gap-2 text-center rounded-xl p-2 border border-zinc-200 bg-zinc-50 hover:scale-105 transition-scale duration-200"
+              className="h-min gap-2 text-center rounded-xl p-2 border border-zinc-200 bg-zinc-50 hover:scale-95 transition-scale duration-200"
             >
               {ingredientImg && (
                 <Image
@@ -40,7 +42,7 @@ export default function IngredientRow({
               <p>
                 {cocktailData[`strMeasure${key.slice(13)}` as keyof Cocktail]}
               </p>
-            </div>
+            </Link>
           );
         })}
     </div>

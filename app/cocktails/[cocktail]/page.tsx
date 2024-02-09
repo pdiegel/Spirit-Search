@@ -6,6 +6,9 @@ import Loading from "@/components/loading";
 import { Ingredient } from "@/interfaces/ingredient";
 import { Cocktail } from "@/interfaces/cocktails";
 import IngredientRow from "@/components/ingredientRow";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css"; // optional
+import InfoRow from "@/components/infoRow";
 
 // 1 through 15
 
@@ -59,17 +62,43 @@ export default function Page({ params }: { params: { cocktail: string } }) {
 
   return (
     <main className="flex flex-col p-4 bg-accent text-text w-full wrapper">
-      <h1 className="text-3xl font-bold my-2">{cocktailData.strDrink}</h1>
-      <Image
-        src={cocktailData.strDrinkThumb}
-        alt={cocktailData.strDrink}
-        height={250}
-        width={250}
-        className="rounded-md shadow-md"
-        priority
-      />
-      <p className="mt-1">{cocktailData.strAlcoholic}</p>
-      <div className="my-4 w-full">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold my-2">{cocktailData.strDrink} </h1>
+        {cocktailData.strDrinkAlternate && (
+          <p>`A/K/A ${cocktailData.strDrinkAlternate}`</p>
+        )}
+
+        <Image
+          src={cocktailData.strDrinkThumb}
+          alt={cocktailData.strDrink}
+          height={250}
+          width={250}
+          className="rounded-md shadow-md"
+          priority
+        />
+      </div>
+      <div className="mb-6 w-full">
+        <h2 className="text-xl font-bold mb-2">Information</h2>
+        <InfoRow label="Type" value={cocktailData.strAlcoholic} />
+        <InfoRow label="Category" value={cocktailData.strCategory} />
+        <InfoRow label="Glass" value={cocktailData.strGlass} />
+        <Tippy
+          content="The International Bartenders Association (IBA) is an international cocktail organization."
+          placement="left-start"
+        >
+          <InfoRow
+            label="IBA Official"
+            value={cocktailData.strIBA ? "Yes" : "No"}
+          />
+        </Tippy>
+        <InfoRow
+          label="Date added"
+          value={new Date(
+            cocktailData.dateModified as string
+          ).toLocaleDateString("en-US")}
+        />
+      </div>
+      <div className="mb-6 w-full">
         <h2 className="text-xl font-bold mb-2">Ingredients</h2>
         <IngredientRow
           ingredients={ingredients}
