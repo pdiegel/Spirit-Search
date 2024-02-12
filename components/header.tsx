@@ -22,7 +22,7 @@ export default function Header() {
   const loggedIn = user ? true : false;
 
   const userDisplay = loggedIn && (
-    <>
+    <Link href={`/user`}>
       <Image
         src={user?.picture || ""}
         alt={user?.nickname || "User"}
@@ -30,7 +30,7 @@ export default function Header() {
         height={50}
         className="rounded-full shadow-md"
       />
-    </>
+    </Link>
   );
 
   const loggedInDisplay = loggedIn ? (

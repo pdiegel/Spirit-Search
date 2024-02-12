@@ -1,5 +1,4 @@
 import { Cocktail } from "@/interfaces/cocktails";
-import { Ingredient } from "@/interfaces/ingredient";
 
 const ingredientKeys = [
   "strIngredient1",
@@ -35,7 +34,8 @@ function normalizeCocktails(cocktails: Cocktail[]) {
 
 export function filterCocktails(
   cocktails: Cocktail[],
-  pickedIngredients: string[]
+  pickedIngredients: string[],
+  userAllergies: string[]
 ): Cocktail[] {
   // Preprocess cocktails to normalize ingredient keys and values
   const normalizedCocktails = normalizeCocktails(cocktails);
@@ -53,7 +53,14 @@ export function filterCocktails(
     )
   );
 
-  return filteredCocktails;
+  const filteredCocktailsWithAllergies = filteredCocktails.filter(
+    (cocktail: any) =>
+      !userAllergies.some((allergy) =>
+        cocktail.ingredients.includes(allergy.toLowerCase())
+      )
+  );
+
+  return filteredCocktailsWithAllergies;
 }
 
 // aggregates all unique ingredients from cocktails
@@ -73,12 +80,26 @@ function getAllCocktailIngredients(cocktails: Cocktail[]) {
 // filters out ingredients not used in any cocktail
 export function filterUnusedIngredients(
   ingredients: string[],
-  cocktails: Cocktail[]
+  cocktails: Cocktail[],
+  userAllergies: string[]
 ) {
   const usedIngredients = getAllCocktailIngredients(cocktails); // Get all used ingredients from cocktails
 
   // Filter the input list of ingredients to keep only those that are used
-  return ingredients.filter(
+  const filteredIngredients = ingredients.filter(
     (ingredient) => usedIngredients.has(ingredient.toLowerCase()) // Ensure case-insensitive comparison
   );
+
+  const lowercaseUserAllergies = userAllergies.map((allergy) =>
+    allergy.toLowerCase()
+  );
+
+  const filteredIngredientsWithAllergies = filteredIngredients.filter(
+    (ingredient) =>
+      !lowercaseUserAllergies.some((allergy) =>
+        ingredient.toLowerCase().includes(allergy)
+      )
+  );
+
+  return filteredIngredientsWithAllergies;
 }

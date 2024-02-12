@@ -9,6 +9,8 @@ import {
   filterUnusedIngredients,
 } from "@/helpers/cocktailFuncs";
 import Loading from "@/components/loading";
+import { getAllIngredients } from "@/helpers/ingredientFuncs";
+import { getUserAllergies } from "@/helpers/mongodbFuncs";
 
 // Multiple of 2, 4 and 7 for a nice grid layout
 const numCocktailsToDisplay = 28;
@@ -19,6 +21,7 @@ export default function Home() {
   const { user, error, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
+  const [userAllergies, setUserAllergies] = useState([] as string[]);
 
   useEffect(() => {
     fetch("/api/cocktails", {
@@ -33,18 +36,14 @@ export default function Home() {
         setCocktails(data.drinks);
       });
 
-    fetch("/api/ingredients", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        let ingredients = data.drinks.map((i: Cocktail) => i.strIngredient1);
-        setIngredients(ingredients);
-      });
-  }, []);
+    getAllIngredients().then((data) => {
+      setIngredients(data);
+    });
+
+    getUserAllergies(user?.sub).then((allergies) =>
+      setUserAllergies(allergies?.testDocument?.allergies || [])
+    );
+  }, [user]);
 
   const handlePrevious = () => {
     setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
@@ -66,8 +65,18 @@ export default function Home() {
 
   if (isLoading || cocktails.length === 0) return <Loading />;
 
-  const filteredCocktails = filterCocktails(cocktails, pickedIngredients);
-  const filteredIngredients = filterUnusedIngredients(ingredients, cocktails);
+  const filteredCocktails = filterCocktails(
+    cocktails,
+    pickedIngredients,
+    userAllergies
+  );
+  const filteredIngredients = filterUnusedIngredients(
+    ingredients,
+    cocktails,
+    userAllergies
+  );
+
+  console.log(userAllergies);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
