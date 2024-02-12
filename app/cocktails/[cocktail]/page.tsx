@@ -82,15 +82,9 @@ export default function Page({ params }: { params: { cocktail: string } }) {
         <InfoRow label="Type" value={cocktailData.strAlcoholic} />
         <InfoRow label="Category" value={cocktailData.strCategory} />
         <InfoRow label="Glass" value={cocktailData.strGlass} />
-        <Tippy
-          content="The International Bartenders Association (IBA) is an international cocktail organization."
-          placement="left-start"
-        >
-          <InfoRow
-            label="IBA Official"
-            value={cocktailData.strIBA ? "Yes" : "No"}
-          />
-        </Tippy>
+        {cocktailData.strIBA && (
+          <InfoRow label="IBA Category" value={cocktailData.strIBA} />
+        )}
         <InfoRow
           label="Date added"
           value={new Date(

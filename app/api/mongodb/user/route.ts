@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const collection = db.collection("UserData");
     const userData = await collection.findOne({ sub: sub });
     console.log("Successfully found test data!", userData);
-    return NextResponse.json(userData?.allergies);
+    return NextResponse.json(userData);
   } catch (error) {
     console.error("Failed to find test data!", error);
     return NextResponse.json({ message: "Failed to find test data!" });
@@ -24,13 +24,10 @@ export async function POST(req: NextRequest) {
     const client = await clientPromise;
     const db = client.db("SpiritSearch");
     const collection = db.collection("UserData");
-    const allergies = {
-      sub: sub,
-      allergies: body,
-    };
+    const userData = body;
     await collection.updateOne(
       { sub: sub },
-      { $set: allergies },
+      { $set: userData },
       { upsert: true }
     );
     console.log("Successfully added test data!");

@@ -53,6 +53,11 @@ export function filterCocktails(
     )
   );
 
+  if (userAllergies.length === 0) {
+    return filteredCocktails;
+  }
+
+  // Filter out cocktails with ingredients that the user is allergic to
   const filteredCocktailsWithAllergies = filteredCocktails.filter(
     (cocktail: any) =>
       !userAllergies.some((allergy) =>
@@ -61,6 +66,17 @@ export function filterCocktails(
   );
 
   return filteredCocktailsWithAllergies;
+}
+
+export function getAllCocktails() {
+  return fetch("/api/cocktails", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => data.drinks);
 }
 
 // aggregates all unique ingredients from cocktails

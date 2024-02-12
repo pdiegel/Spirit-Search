@@ -18,9 +18,9 @@ export default function UserProfilePage() {
     });
 
     if (user) {
-      getUserAllergies(user.sub).then((allergies) =>
-        setPickedAllergies(allergies?.testDocument?.allergies || [])
-      );
+      getUserAllergies(user?.sub).then((allergies) => {
+        setPickedAllergies(allergies);
+      });
     }
   }, [user]);
 
@@ -40,8 +40,6 @@ export default function UserProfilePage() {
   if (isLoading) return <Loading />;
 
   if (!user) return <div>Not logged in</div>;
-
-  console.log(user, pickedAllergies, ingredients);
 
   return (
     <main className="flex min-h-screen flex-col p-4 bg-accent w-full wrapper">

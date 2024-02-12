@@ -6,7 +6,8 @@ const nextConfig = {
 
             // Gravatar
             { protocol: 'https', hostname: 's.gravatar.com' },
-            { protocol: 'https', hostname: 'www.thecocktaildb.com' }
+            { protocol: 'https', hostname: 'www.thecocktaildb.com' },
+            { protocol: 'https', hostname: 'upload.wikimedia.org' }
         ],
     }
 };

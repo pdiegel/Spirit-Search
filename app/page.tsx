@@ -7,10 +7,17 @@ import { Cocktail } from "@/interfaces/cocktails";
 import {
   filterCocktails,
   filterUnusedIngredients,
+  getAllCocktails,
 } from "@/helpers/cocktailFuncs";
 import Loading from "@/components/loading";
 import { getAllIngredients } from "@/helpers/ingredientFuncs";
-import { getUserAllergies } from "@/helpers/mongodbFuncs";
+import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
+
+export interface User {
+  sub: string | undefined | null;
+  allergies: string[];
+  favoriteCocktails: string[];
+}
 
 // Multiple of 2, 4 and 7 for a nice grid layout
 const numCocktailsToDisplay = 28;
@@ -21,29 +28,32 @@ export default function Home() {
   const { user, error, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
-  const [userAllergies, setUserAllergies] = useState([] as string[]);
+  const [userData, setUserData] = useState({
+    sub: user?.sub,
+    allergies: [],
+    favoriteCocktails: [],
+  } as User);
 
   useEffect(() => {
-    fetch("/api/cocktails", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setCocktails(data.drinks);
-      });
+    getAllCocktails().then((data) => {
+      setCocktails(data);
+    });
 
     getAllIngredients().then((data) => {
       setIngredients(data);
     });
 
-    getUserAllergies(user?.sub).then((allergies) =>
-      setUserAllergies(allergies?.testDocument?.allergies || [])
-    );
+    if (user?.sub) {
+      getUserData(user.sub).then((data) => {
+        delete data._id;
+        setUserData(data);
+      });
+    }
   }, [user]);
+
+  useEffect(() => {
+    setLowerCocktailIndex(0);
+  }, [pickedIngredients]);
 
   const handlePrevious = () => {
     setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
@@ -63,20 +73,41 @@ export default function Home() {
     setPickedIngredients((prevIngredients) => [...prevIngredients, i]);
   };
 
+  const handleFavorite = (cocktailId: string) => {
+    let newUserData;
+    if (userData.favoriteCocktails.includes(cocktailId)) {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: userData.favoriteCocktails.filter(
+          (id) => id !== cocktailId
+        ),
+      };
+    } else {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
+      };
+    }
+
+    setUserData(newUserData);
+    updateUserData(newUserData);
+  };
+
   if (isLoading || cocktails.length === 0) return <Loading />;
 
   const filteredCocktails = filterCocktails(
     cocktails,
     pickedIngredients,
-    userAllergies
-  );
-  const filteredIngredients = filterUnusedIngredients(
-    ingredients,
-    cocktails,
-    userAllergies
+    userData.allergies
   );
 
-  console.log(userAllergies);
+  const filteredIngredients = filterUnusedIngredients(
+    ingredients,
+    filteredCocktails,
+    userData.allergies
+  );
+
+  userData.allergies.length > 0 && console.log(userData.allergies);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
@@ -98,6 +129,8 @@ export default function Home() {
             lowerCocktailIndex,
             lowerCocktailIndex + numCocktailsToDisplay
           )}
+          favoriteCocktails={userData.favoriteCocktails}
+          onFavorite={handleFavorite}
         />
       )}
 
