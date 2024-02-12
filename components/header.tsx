@@ -11,7 +11,7 @@ const genericLinks = [
 ];
 
 const loggedInLinks = [
-  { href: "/profile", label: "Profile" },
+  { href: "/user", label: "Profile" },
   { href: "/favorites", label: "Favorites" },
 ];
 
