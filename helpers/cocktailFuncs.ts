@@ -119,3 +119,14 @@ export function filterUnusedIngredients(
 
   return filteredIngredientsWithAllergies;
 }
+
+export function getCocktailsWithIngredient(ingredient: string) {
+  return fetch(`/api/cocktails/ingredientName?name=${ingredient}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => data.drinks);
+}

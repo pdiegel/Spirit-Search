@@ -6,8 +6,6 @@ import Loading from "@/components/loading";
 import { Ingredient } from "@/interfaces/ingredient";
 import { Cocktail } from "@/interfaces/cocktails";
 import IngredientRow from "@/components/ingredientRow";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
 import InfoRow from "@/components/infoRow";
 
 // 1 through 15
