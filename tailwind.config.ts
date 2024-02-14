@@ -23,6 +23,7 @@ const config: Config = {
       },
       plugins: [],
     },
+    darkmode: "class",
   },
 };
 
