@@ -15,7 +15,7 @@ export default function CocktailGrid({
 }) {
   const { user } = useUser();
   return (
-    <div className="flex flex-wrap items-start gap-2 justify-center my-8">
+    <div className="flex flex-wrap items-start gap-2 justify-center mb-6">
       {cocktails.map((cocktail: any) => {
         return (
           <div

@@ -33,6 +33,7 @@ export default function Home() {
     allergies: [],
     favoriteCocktails: [],
   } as User);
+  const [cocktailFilter, setCocktailFilter] = useState("");
 
   useEffect(() => {
     getAllCocktails().then((data) => {
@@ -95,7 +96,7 @@ export default function Home() {
 
   if (isLoading || cocktails.length === 0) return <Loading />;
 
-  const filteredCocktails = filterCocktails(
+  let filteredCocktails = filterCocktails(
     cocktails,
     pickedIngredients,
     userData.allergies
@@ -106,6 +107,12 @@ export default function Home() {
     filteredCocktails,
     userData.allergies
   );
+
+  filteredCocktails = cocktailFilter
+    ? filteredCocktails.filter((cocktail) =>
+        cocktail.strDrink.toLowerCase().includes(cocktailFilter.toLowerCase())
+      )
+    : filteredCocktails;
 
   userData.allergies.length > 0 && console.log(userData.allergies);
 
@@ -123,6 +130,26 @@ export default function Home() {
       )}
 
       {/* Cocktail Grid */}
+      <div className="w-full">
+        <h1 className="text-2xl font-bold mt-6">
+          {pickedIngredients.length > 0
+            ? "Cocktails with selected ingredients"
+            : "All Cocktails"}
+        </h1>
+        <input
+          type="text"
+          className="px-2 py-1 rounded-md mt-2 mb-2 border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
+          onChange={(e) => setCocktailFilter(e.target.value)}
+          value={cocktailFilter}
+          placeholder="Search for a cocktail"
+        />
+        <button
+          onClick={() => setCocktailFilter("")}
+          className="bg-red-500 text-white px-2 py-1 ml-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
+        >
+          Clear
+        </button>
+      </div>
       {filteredCocktails.length > 0 && (
         <CocktailGrid
           cocktails={filteredCocktails.slice(
