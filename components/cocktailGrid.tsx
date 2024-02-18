@@ -33,7 +33,7 @@ export default function CocktailGrid({
                 alt={cocktail.strDrink}
                 height={30}
                 width={30}
-                className="absolute top-10 left-3 cursor-pointer hover:scale-150 transition-transform duration-200 bg-cyan-100/50 rounded-full p-1 "
+                className="absolute bottom-[115px] left-3 cursor-pointer hover:scale-150 transition-transform duration-200 bg-cyan-100/50 rounded-full p-1 "
               />
             )}
             <Link
