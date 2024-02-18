@@ -8,6 +8,7 @@ import Carousel from "@/components/carousel";
 import { Cocktail } from "@/interfaces/cocktails";
 import { getIngredientData } from "@/helpers/ingredientFuncs";
 import { getCocktailsWithIngredient } from "@/helpers/cocktailFuncs";
+import CocktailGrid from "@/components/cocktailGrid";
 
 // 1 through 15
 
@@ -62,10 +63,12 @@ export default function Page({ params }: { params: { ingredient: string } }) {
           <p>{ingredientData.strDescription}</p>)
         </div>
       )}
-      <div className="mb-6">
+      <div className="mb-6 text-ellipsis">
         <h2 className="text-xl font-bold mb-2">Featured in</h2>
-        {cocktails.length > 0 && (
+        {cocktails.length > 3 ? (
           <Carousel cocktails={cocktails} numItems={3} />
+        ) : (
+          <CocktailGrid cocktails={cocktails} />
         )}
       </div>
     </main>

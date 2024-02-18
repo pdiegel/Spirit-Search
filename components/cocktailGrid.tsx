@@ -10,7 +10,7 @@ export default function CocktailGrid({
   onFavorite,
 }: {
   cocktails: any[];
-  favoriteCocktails: string[] | undefined;
+  favoriteCocktails?: string[] | undefined;
   onFavorite?: Function | undefined;
 }) {
   const { user } = useUser();

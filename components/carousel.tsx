@@ -42,8 +42,11 @@ export default function Carousel({
   };
 
   return (
-    <div className="flex items-center text-sm lg:flex gap-4 relative">
-      <button onClick={() => setLowIndex(getPreviousIndex(lowIndex))}>
+    <div className="flex items-center lg:flex gap-4">
+      <button
+        onClick={() => setLowIndex(getPreviousIndex(lowIndex))}
+        className="p-2 font-bold bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300 ease-in-out border border-gray-400"
+      >
         {"<"}
       </button>
       {getItems().map((item) => (
@@ -53,7 +56,7 @@ export default function Carousel({
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-between self-start"
+          className="flex flex-col items-center justify-between self-start -mb-4"
         >
           <Link href={`/cocktails/${item.idDrink}`}>
             <Image
@@ -61,13 +64,20 @@ export default function Carousel({
               alt={item.strDrink}
               height={250}
               width={250}
-              className="rounded-md"
+              className="rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
             />
-            <h3 className="text-center">{item.strDrink}</h3>
+            <h3 className="text-center font-medium mt-2 h-20">
+              {item.strDrink}
+            </h3>
           </Link>
         </motion.div>
       ))}
-      <button onClick={() => setLowIndex(getNextIndex(lowIndex))}>{">"}</button>
+      <button
+        onClick={() => setLowIndex(getNextIndex(lowIndex))}
+        className="p-2 font-bold bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300 ease-in-out border border-gray-400"
+      >
+        {">"}
+      </button>
     </div>
   );
 }
