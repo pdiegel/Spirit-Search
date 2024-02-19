@@ -73,7 +73,7 @@ export default function Header() {
   ));
 
   return (
-    <header className="p-4 bg-primary text-text w-full">
+    <header className="p-4 w-full">
       <div className="wrapper flex items-center justify-between">
         {/* Screens less than 640px wide */}
         <nav className="sm:hidden">

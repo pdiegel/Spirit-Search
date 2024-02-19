@@ -3,6 +3,7 @@ import { Quicksand } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <UserProvider>
           <Header />
           {children}
+          <Footer />
         </UserProvider>
       </body>
     </html>

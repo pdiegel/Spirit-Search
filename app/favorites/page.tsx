@@ -52,12 +52,7 @@ export default function FavoriteCocktailsPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
-      <h1
-        className="text-2xl font-semibold
-        text-center -mb-4"
-      >
-        Your Favorite Cocktails
-      </h1>
+      <h1 className="text-3xl font-bold mb-6 mt-2">Your Favorite Cocktails</h1>
       <CocktailGrid
         cocktails={cocktails.filter((cocktail) =>
           userData.favoriteCocktails.includes(cocktail.idDrink)
