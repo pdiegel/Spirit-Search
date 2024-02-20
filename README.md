@@ -20,24 +20,31 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-- npm
+npm
 
-  ```sh
-  npm install npm@latest -g
-  ```
+```sh
+npm install npm@latest -g
+```
 
 ### Installation
 
-- Clone the repo
+Clone the repo
 
 ```sh
 git clone https://github.com/pdiegel/Spirit-Search.git
 ```
 
-- Install NPM packages
+Install NPM packages
 
 ```sh
 npm install
+```
+
+Add this Environment Variable to a .env file in the root directory:
+
+```sh
+# This is required for development purposes.
+NODE_ENV=development
 ```
 
 ### Usage
@@ -54,11 +61,11 @@ Navigate to <http://localhost:3000> to view the app.
 
 Any contributions you make are greatly appreciated.
 
-- Fork the Project
-- Create your Feature Branch (git checkout -b feature/AmazingFeature)
-- Commit your Changes (git commit -m 'Add some AmazingFeature')
-- Push to the Branch (git push origin feature/AmazingFeature)
-- Open a Pull Request
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Push to the Branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
 
 ### License
 
