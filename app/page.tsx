@@ -4,14 +4,9 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import IngredientPicker from "@/components/ingredientPicker";
 import CocktailGrid from "@/components/cocktailGrid";
 import { Cocktail } from "@/interfaces/cocktails";
-import {
-  filterCocktails,
-  filterUnusedIngredients,
-  getAllCocktails,
-} from "@/helpers/cocktailFuncs";
 import Loading from "@/components/loading";
-import { getAllIngredients } from "@/helpers/ingredientFuncs";
 import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
+import { CocktailDbClient } from "@/helpers/cocktailClass";
 
 export interface User {
   sub: string | undefined | null;
@@ -21,10 +16,10 @@ export interface User {
 
 // Multiple of 2, 4 and 7 for a nice grid layout
 const numCocktailsToDisplay = 28;
+const cocktailDbClient = new CocktailDbClient();
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
-  const [ingredients, setIngredients] = useState([] as string[]);
   const { user, error, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
@@ -36,13 +31,11 @@ export default function Home() {
   const [cocktailFilter, setCocktailFilter] = useState("");
 
   useEffect(() => {
-    getAllCocktails().then((data) => {
-      setCocktails(data);
-    });
-
-    getAllIngredients().then((data) => {
-      setIngredients(data);
-    });
+    fetch("/api/cocktails")
+      .then((res) => res.json())
+      .then((data) => {
+        setCocktails(data);
+      });
 
     if (user?.sub) {
       getUserData(user.sub).then((data) => {
@@ -96,21 +89,20 @@ export default function Home() {
 
   if (isLoading || cocktails.length === 0) return <Loading />;
 
-  let filteredCocktails = filterCocktails(
-    cocktails,
+  let filteredCocktails = cocktailDbClient.filterCocktails(
     pickedIngredients,
-    userData.allergies
+    userData.allergies,
+    cocktails
   );
 
-  const filteredIngredients = filterUnusedIngredients(
-    ingredients,
-    filteredCocktails,
-    userData.allergies
-  );
+  const filteredIngredients =
+    cocktailDbClient.getUniqueCocktailIngredients(filteredCocktails);
+
+  console.log(filteredIngredients);
 
   filteredCocktails = cocktailFilter
     ? filteredCocktails.filter((cocktail) =>
-        cocktail.strDrink.toLowerCase().includes(cocktailFilter.toLowerCase())
+        cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
       )
     : filteredCocktails;
 

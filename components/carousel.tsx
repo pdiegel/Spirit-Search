@@ -51,24 +51,22 @@ export default function Carousel({
       </button>
       {getItems().map((item) => (
         <motion.div
-          key={item.idDrink}
+          key={item.cocktailId}
           layout
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-between self-start -mb-4"
         >
-          <Link href={`/cocktails/${item.idDrink}`}>
+          <Link href={`/cocktails/${item.cocktailId}`}>
             <Image
-              src={item.strDrinkThumb + "/preview"}
-              alt={item.strDrink}
+              src={item.thumbnail + "/preview"}
+              alt={item.name}
               height={250}
               width={250}
               className="rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
             />
-            <h3 className="text-center font-medium mt-2 h-20">
-              {item.strDrink}
-            </h3>
+            <h3 className="text-center font-medium mt-2 h-20">{item.name}</h3>
           </Link>
         </motion.div>
       ))}

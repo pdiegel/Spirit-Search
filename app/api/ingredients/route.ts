@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { CocktailDbClient } from "@/helpers/cocktailClass";
 
-export async function GET() {
-  const request = await fetch(
-    "https://www.thecocktaildb.com/api/json/v2/9973533/list.php?i=list",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 36000 },
-    }
-  );
-  const data = await request.json();
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const client = new CocktailDbClient();
+  const ingredientName = req.nextUrl.searchParams.get("name");
+  let data;
+
+  if (ingredientName) {
+    data = await client.fetchIngredientDataByName(ingredientName);
+  } else {
+    data = await client.fetchAllIngredients();
+  }
 
   return NextResponse.json(data);
 }

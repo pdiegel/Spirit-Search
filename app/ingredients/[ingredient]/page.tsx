@@ -6,11 +6,7 @@ import { Ingredient } from "@/interfaces/ingredient";
 import InfoRow from "@/components/infoRow";
 import Carousel from "@/components/carousel";
 import { Cocktail } from "@/interfaces/cocktails";
-import { getIngredientData } from "@/helpers/ingredientFuncs";
-import { getCocktailsWithIngredient } from "@/helpers/cocktailFuncs";
 import CocktailGrid from "@/components/cocktailGrid";
-
-// 1 through 15
 
 export default function Page({ params }: { params: { ingredient: string } }) {
   const [ingredientData, setIngredientData] = useState({} as Ingredient);
@@ -19,13 +15,18 @@ export default function Page({ params }: { params: { ingredient: string } }) {
   const loading = Object.keys(ingredientData).length === 0;
 
   useEffect(() => {
-    getIngredientData(params.ingredient).then((data) => {
-      setIngredientData(data[0]);
-    });
+    fetch(`/api/ingredients?name=${params.ingredient}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.ingredients[0]);
+        setIngredientData(data.ingredients[0]);
+      });
 
-    getCocktailsWithIngredient(params.ingredient).then((data) => {
-      setCocktails(data);
-    });
+    fetch(`/api/cocktails?name=${params.ingredient}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCocktails(data);
+      });
   }, [params]);
 
   if (loading) {
@@ -39,14 +40,16 @@ export default function Page({ params }: { params: { ingredient: string } }) {
           {ingredientData.strIngredient}{" "}
         </h1>
 
-        <Image
-          src={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.strIngredient}.png`}
-          alt={ingredientData.strIngredient}
-          height={250}
-          width={250}
-          className="rounded-md"
-          priority
-        />
+        {ingredientData.strIngredient && (
+          <Image
+            src={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.strIngredient}.png`}
+            alt={ingredientData.strIngredient}
+            height={250}
+            width={250}
+            className="rounded-md"
+            priority
+          />
+        )}
       </div>
       <div className="mb-6 w-full">
         <h2 className="text-xl font-bold mb-2">Information</h2>

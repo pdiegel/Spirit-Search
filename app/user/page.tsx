@@ -4,18 +4,20 @@ import Loading from "@/components/loading";
 import Image from "next/image";
 import IngredientPicker from "@/components/ingredientPicker";
 import { useState, useEffect } from "react";
-import { getAllIngredients } from "@/helpers/ingredientFuncs";
 import { getUserAllergies, setUserAllergies } from "@/helpers/mongodbFuncs";
 
 export default function UserProfilePage() {
   const { user, error, isLoading } = useUser();
-  const [ingredients, setIngredients] = useState([] as string[]);
+  const [ingredients, setIngredients] = useState(new Set() as Set<string>);
   const [pickedAllergies, setPickedAllergies] = useState([] as string[]);
 
   useEffect(() => {
-    getAllIngredients().then((data) => {
-      setIngredients(data);
-    });
+    fetch("/api/ingredients")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setIngredients(data);
+      });
 
     if (user) {
       getUserAllergies(user?.sub).then((allergies) => {

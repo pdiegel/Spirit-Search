@@ -7,7 +7,7 @@ export default function IngredientPicker({
   pickedIngredients,
   onSelection,
 }: {
-  availableIngredients: string[];
+  availableIngredients: Set<string>;
   pickedIngredients: string[];
   onSelection: (selection: string) => void;
 }) {
@@ -27,7 +27,7 @@ export default function IngredientPicker({
     )
   );
 
-  const availableIngredientsDisplay = availableIngredients
+  const availableIngredientsDisplay = Array.from(availableIngredients)
     .sort()
     .filter((i) => i.toLowerCase().includes(ingredientFilter.toLowerCase()))
     .filter((i) => !pickedIngredients.includes(i))
