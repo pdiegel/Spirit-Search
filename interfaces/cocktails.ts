@@ -2,12 +2,12 @@ export interface Cocktails {
   drinks: Cocktail[];
 }
 
-export interface Cocktail {
+export interface OriginalCocktail {
   idDrink: string;
   strDrink: string;
-  strDrinkAlternate: string | null;
+  strDrinkAlternate: string;
   strTags?: string;
-  strVideo: string | null;
+  strVideo: string;
   strCategory: string;
   strIBA?: string;
   strAlcoholic: string;
@@ -53,5 +53,24 @@ export interface Cocktail {
   strImageSource?: string;
   strImageAttribution?: string;
   strCreativeCommonsConfirmed: string;
+  dateModified?: string;
+}
+
+export interface Cocktail {
+  cocktailId: string;
+  name: string;
+  alternateName?: string;
+  tags?: string;
+  video: string;
+  category: string;
+  iba?: string;
+  isAlcoholic: string;
+  glassType: string;
+  instructions: string;
+  thumbnail: string;
+  ingredients: string[];
+  measures: string[];
+  imageSource?: string;
+  isCreativeCommons: string;
   dateModified?: string;
 }
