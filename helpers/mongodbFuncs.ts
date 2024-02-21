@@ -1,6 +1,6 @@
 import { User } from "@/app/page";
 
-export function getUserAllergies(sub: string | null | undefined) {
+export function getUserAllergies(sub: string) {
   if (!sub) return Promise.resolve([]);
   return fetch(`/api/mongodb/allergies?sub=${sub}`, {
     method: "GET",
@@ -10,10 +10,7 @@ export function getUserAllergies(sub: string | null | undefined) {
   }).then((res) => res.json());
 }
 
-export function setUserAllergies(
-  sub: string | null | undefined,
-  allergies: string[]
-) {
+export function setUserAllergies(sub: string, allergies: string[]) {
   if (!sub) return Promise.resolve({ message: "No user found" });
   return fetch(`/api/mongodb/allergies?sub=${sub}`, {
     method: "POST",
@@ -35,7 +32,7 @@ export function updateUserData(userData: User) {
   }).then((res) => res.json());
 }
 
-export function getUserData(sub: string | null | undefined) {
+export function getUserData(sub: string) {
   if (!sub) return Promise.resolve({ message: "No user found" });
   return fetch(`/api/mongodb/user?sub=${sub}`, {
     method: "GET",

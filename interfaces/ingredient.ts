@@ -1,17 +1,17 @@
 export interface OriginalIngredient {
   idIngredient: string;
-  strABV: string | null;
-  strAlcohol: string | null;
+  strABV: string;
+  strAlcohol: string;
   strDescription: string;
   strIngredient: string;
-  strType: string | null;
+  strType: string;
 }
 
 export interface Ingredient {
   ingredientId: string;
-  abbreviation: string | null;
-  containsAlcohol: string | null;
+  abbreviation: string;
+  containsAlcohol: string;
   description: string;
   name: string;
-  type: string | null;
+  type: string;
 }

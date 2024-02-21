@@ -22,7 +22,6 @@ export default function Page({ params }: { params: { cocktail: string } }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setCocktailData(data);
       });
   }, [params]);

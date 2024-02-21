@@ -14,7 +14,7 @@ export interface User {
   favoriteCocktails: string[];
 }
 
-// Multiple of 2, 4 and 7 for a nice grid layout
+// 28 is a Multiple of 2, 4 and 7. Creates a nice grid layout
 const numCocktailsToDisplay = 28;
 const cocktailDbClient = new CocktailDbClient();
 

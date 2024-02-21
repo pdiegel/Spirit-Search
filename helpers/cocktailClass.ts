@@ -85,7 +85,7 @@ export class CocktailDbClient {
     );
 
     // Filter cocktails based on picked ingredients
-    return cocktails.filter((cocktail: any) =>
+    return cocktails.filter((cocktail: Cocktail) =>
       // Ensure that every ingredient is present in the cocktail's ingredients
       [...ingredientSet].every((ingredient) =>
         cocktail.ingredients.includes(ingredient)
@@ -103,7 +103,7 @@ export class CocktailDbClient {
 
     // Filter out cocktails with ingredients that the user is allergic to
     return cocktails.filter(
-      (cocktail: any) =>
+      (cocktail: Cocktail) =>
         !allergies.some((allergy) =>
           cocktail.ingredients.includes(allergy.toLowerCase())
         )
@@ -185,7 +185,9 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      return data.drinks.map((drink: any) => drink.strIngredient1);
+      return data.drinks.map(
+        (cocktail: OriginalCocktail) => cocktail.strIngredient1
+      );
     } catch (error) {
       console.error("Error:", error);
       return [];

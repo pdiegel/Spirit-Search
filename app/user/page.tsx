@@ -18,8 +18,8 @@ export default function UserProfilePage() {
         setIngredients(data);
       });
 
-    if (user) {
-      getUserAllergies(user?.sub).then((allergies) => {
+    if (user?.sub) {
+      getUserAllergies(user.sub).then((allergies) => {
         setPickedAllergies(allergies);
       });
     }
@@ -34,7 +34,8 @@ export default function UserProfilePage() {
     }
 
     setPickedAllergies(newAllergies);
-    setUserAllergies(user?.sub, newAllergies);
+    if (user?.sub) setUserAllergies(user.sub, newAllergies);
+
     return;
   };
 
