@@ -5,7 +5,6 @@ import { getUserData, updateUserData } from "@/helpers/mongodbFuncs";
 import { User } from "../page";
 import { useEffect, useState } from "react";
 import { Cocktail } from "@/interfaces/cocktails";
-import { getAllCocktails } from "@/helpers/cocktailFuncs";
 import CocktailGrid from "@/components/cocktailGrid";
 
 export default function FavoriteCocktailsPage() {
@@ -24,9 +23,11 @@ export default function FavoriteCocktailsPage() {
         setUserData(data);
       });
 
-      getAllCocktails().then((data) => {
-        setCocktails(data);
-      });
+      fetch("/api/cocktails")
+        .then((res) => res.json())
+        .then((data) => {
+          setCocktails(data);
+        });
     }
   }, [user]);
 
@@ -55,7 +56,7 @@ export default function FavoriteCocktailsPage() {
       <h1 className="text-3xl font-bold mb-6 mt-2">Your Favorite Cocktails</h1>
       <CocktailGrid
         cocktails={cocktails.filter((cocktail) =>
-          userData.favoriteCocktails.includes(cocktail.idDrink)
+          userData.favoriteCocktails.includes(cocktail.cocktailId)
         )}
         favoriteCocktails={userData.favoriteCocktails}
         onFavorite={handleFavorite}

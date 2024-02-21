@@ -1,5 +1,5 @@
 import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
-import { Ingredient } from "@/interfaces/ingredient";
+import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
 export class CocktailDbClient {
   // Revalidate every 10 hours
@@ -25,6 +25,19 @@ export class CocktailDbClient {
         imageSource: cocktail.strImageSource,
         isCreativeCommons: cocktail.strCreativeCommonsConfirmed,
         dateModified: cocktail.dateModified,
+      };
+    });
+  }
+
+  private remapIngredients(ingredients: OriginalIngredient[]): Ingredient[] {
+    return ingredients.map((ingredient) => {
+      return {
+        ingredientId: ingredient.idIngredient,
+        abbreviation: ingredient.strABV,
+        containsAlcohol: ingredient.strAlcohol,
+        description: ingredient.strDescription,
+        name: ingredient.strIngredient,
+        type: ingredient.strType,
       };
     });
   }
@@ -185,7 +198,7 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      return data;
+      return this.remapIngredients(data.ingredients)[0];
     } catch (error) {
       console.error(error);
       return {} as Ingredient;

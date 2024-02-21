@@ -18,8 +18,7 @@ export default function Page({ params }: { params: { ingredient: string } }) {
     fetch(`/api/ingredients?name=${params.ingredient}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.ingredients[0]);
-        setIngredientData(data.ingredients[0]);
+        setIngredientData(data);
       });
 
     fetch(`/api/cocktails?name=${params.ingredient}`)
@@ -36,14 +35,12 @@ export default function Page({ params }: { params: { ingredient: string } }) {
   return (
     <main className="flex flex-col p-4 bg-accent text-text w-full wrapper">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold my-2">
-          {ingredientData.strIngredient}{" "}
-        </h1>
+        <h1 className="text-3xl font-bold my-2">{ingredientData.name} </h1>
 
-        {ingredientData.strIngredient && (
+        {ingredientData.name && (
           <Image
-            src={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.strIngredient}.png`}
-            alt={ingredientData.strIngredient}
+            src={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.name}.png`}
+            alt={ingredientData.name}
             height={250}
             width={250}
             className="rounded-md"
@@ -53,17 +50,20 @@ export default function Page({ params }: { params: { ingredient: string } }) {
       </div>
       <div className="mb-6 w-full">
         <h2 className="text-xl font-bold mb-2">Information</h2>
-        {ingredientData.strAlcohol && (
-          <InfoRow label="Contains Alcohol" value={ingredientData.strAlcohol} />
+        {ingredientData.containsAlcohol && (
+          <InfoRow
+            label="Contains Alcohol"
+            value={ingredientData.containsAlcohol}
+          />
         )}
-        {ingredientData.strType && (
-          <InfoRow label="Category" value={ingredientData.strType} />
+        {ingredientData.type && (
+          <InfoRow label="Category" value={ingredientData.type} />
         )}
       </div>
-      {ingredientData.strDescription && (
+      {ingredientData.description && (
         <div className="w-full mb-6">
           <h2 className="text-xl font-bold">Description</h2>(
-          <p>{ingredientData.strDescription}</p>)
+          <p>{ingredientData.description}</p>)
         </div>
       )}
       <div className="mb-6 text-ellipsis">

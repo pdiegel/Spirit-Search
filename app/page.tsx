@@ -98,15 +98,11 @@ export default function Home() {
   const filteredIngredients =
     cocktailDbClient.getUniqueCocktailIngredients(filteredCocktails);
 
-  console.log(filteredIngredients);
-
   filteredCocktails = cocktailFilter
     ? filteredCocktails.filter((cocktail) =>
         cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
       )
     : filteredCocktails;
-
-  userData.allergies.length > 0 && console.log(userData.allergies);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">

@@ -1,7 +1,3 @@
-export interface Cocktails {
-  drinks: Cocktail[];
-}
-
 export interface OriginalCocktail {
   idDrink: string;
   strDrink: string;

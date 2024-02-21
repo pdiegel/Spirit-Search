@@ -35,8 +35,7 @@ export default function Page({ params }: { params: { cocktail: string } }) {
         );
 
         const results = await Promise.all(requests);
-        const newIngredients = results.map((result) => result.ingredients[0]);
-        setIngredients(newIngredients);
+        setIngredients(results);
       }
     };
 

@@ -15,7 +15,6 @@ export default function UserProfilePage() {
     fetch("/api/ingredients")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setIngredients(data);
       });
 
