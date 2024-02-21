@@ -9,11 +9,9 @@ export async function GET(req: NextRequest) {
     const db = client.db("SpiritSearch");
     const collection = db.collection("UserData");
     const userData = await collection.findOne({ sub: sub });
-    console.log("Successfully found test data!", userData);
     return NextResponse.json(userData?.allergies);
   } catch (error) {
-    console.error("Failed to find test data!", error);
-    return NextResponse.json({ message: "Failed to find test data!" });
+    return NextResponse.json({ message: "Failed to find allergy data!" });
   }
 }
 
@@ -33,10 +31,8 @@ export async function POST(req: NextRequest) {
       { $set: allergies },
       { upsert: true }
     );
-    console.log("Successfully added test data!");
-    return NextResponse.json({ message: "Successfully added test data!" });
+    return NextResponse.json({ message: "Successfully added allergy data!" });
   } catch (error) {
-    console.error("Failed to add test data!", error);
-    return NextResponse.json({ message: "Failed to add test data!" });
+    return NextResponse.json({ message: "Failed to add allergy data!" });
   }
 }

@@ -9,7 +9,7 @@ import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
 
 export interface User {
-  sub: string | undefined | null;
+  sub: string;
   allergies: string[];
   favoriteCocktails: string[];
 }
@@ -20,13 +20,13 @@ const cocktailDbClient = new CocktailDbClient();
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
   const [userData, setUserData] = useState({
     sub: user?.sub,
-    allergies: [],
-    favoriteCocktails: [],
+    allergies: [] as string[],
+    favoriteCocktails: [] as string[],
   } as User);
   const [cocktailFilter, setCocktailFilter] = useState("");
 
@@ -49,15 +49,15 @@ export default function Home() {
     setLowerCocktailIndex(0);
   }, [pickedIngredients]);
 
-  const handlePrevious = () => {
+  const handlePrevious = (): void => {
     setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
   };
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
   };
 
-  const handlePickedIngredients = (i: string) => {
+  const handlePickedIngredients = (i: string): void => {
     if (pickedIngredients.includes(i)) {
       setPickedIngredients(
         pickedIngredients.filter((ingredient) => ingredient !== i)
@@ -67,7 +67,7 @@ export default function Home() {
     setPickedIngredients((prevIngredients) => [...prevIngredients, i]);
   };
 
-  const handleFavorite = (cocktailId: string) => {
+  const handleFavorite = (cocktailId: string): void => {
     let newUserData;
     if (userData.favoriteCocktails.includes(cocktailId)) {
       newUserData = {

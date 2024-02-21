@@ -16,11 +16,11 @@ export default function Carousel({
 }) {
   const [lowIndex, setLowIndex] = useState(0);
 
-  const getNextIndex = (index: number) => {
+  const getNextIndex = (index: number): number => {
     return (index + 1) % cocktails.length;
   };
 
-  const getPreviousIndex = (index: number) => {
+  const getPreviousIndex = (index: number): number => {
     return (index - 1 + cocktails.length) % cocktails.length;
   };
 
@@ -31,14 +31,14 @@ export default function Carousel({
     return () => clearInterval(interval);
   }, [lowIndex]);
 
-  const getItems = () => {
-    const newItems = [];
+  const getVisibleCocktails = (): Cocktail[] => {
+    const visibleCocktails = [] as Cocktail[];
     for (let i = 0; i < numItems; i++) {
       // Calculate the current index in a circular manner (go back to the start if we reach the end of the array)
       const index = (lowIndex + i) % cocktails.length;
-      newItems.push(cocktails[index]);
+      visibleCocktails.push(cocktails[index]);
     }
-    return newItems;
+    return visibleCocktails;
   };
 
   return (
@@ -49,24 +49,26 @@ export default function Carousel({
       >
         {"<"}
       </button>
-      {getItems().map((item) => (
+      {getVisibleCocktails().map((cocktail) => (
         <motion.div
-          key={item.cocktailId}
+          key={cocktail.cocktailId}
           layout
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-between self-start -mb-4"
         >
-          <Link href={`/cocktails/${item.cocktailId}`}>
+          <Link href={`/cocktails/${cocktail.cocktailId}`}>
             <Image
-              src={item.thumbnail + "/preview"}
-              alt={item.name}
+              src={cocktail.thumbnail + "/preview"}
+              alt={cocktail.name}
               height={250}
               width={250}
               className="rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
             />
-            <h3 className="text-center font-medium mt-2 h-20">{item.name}</h3>
+            <h3 className="text-center font-medium mt-2 h-20">
+              {cocktail.name}
+            </h3>
           </Link>
         </motion.div>
       ))}

@@ -31,7 +31,7 @@ export default function FavoriteCocktailsPage() {
     }
   }, [user]);
 
-  const handleFavorite = (cocktailId: string) => {
+  const handleFavorite = (cocktailId: string): void => {
     let newUserData;
     if (userData.favoriteCocktails.includes(cocktailId)) {
       newUserData = {

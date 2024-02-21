@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { getUserAllergies, setUserAllergies } from "@/helpers/mongodbFuncs";
 
 export default function UserProfilePage() {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const [ingredients, setIngredients] = useState(new Set() as Set<string>);
   const [pickedAllergies, setPickedAllergies] = useState([] as string[]);
 
@@ -25,7 +25,7 @@ export default function UserProfilePage() {
     }
   }, [user]);
 
-  const handlePickedAllergies = (i: string) => {
+  const handlePickedAllergies = (i: string): void => {
     let newAllergies;
     if (pickedAllergies.includes(i)) {
       newAllergies = pickedAllergies.filter((ingredient) => ingredient !== i);
