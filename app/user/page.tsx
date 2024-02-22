@@ -5,16 +5,22 @@ import Image from "next/image";
 import IngredientPicker from "@/components/ingredientPicker";
 import { useState, useEffect } from "react";
 import { getUserAllergies, setUserAllergies } from "@/helpers/mongodbFuncs";
+import GenericError from "@/components/errors/genericError";
 
 export default function UserProfilePage() {
   const { user, isLoading } = useUser();
   const [ingredients, setIngredients] = useState(new Set() as Set<string>);
   const [pickedAllergies, setPickedAllergies] = useState([] as string[]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/ingredients")
       .then((res) => res.json())
       .then((data) => {
+        if (data.length === 0) {
+          setError("Error fetching ingredients");
+          return;
+        }
         setIngredients(data);
       });
 
@@ -39,7 +45,7 @@ export default function UserProfilePage() {
     return;
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading || (ingredients.size === 0 && !error)) return <Loading />;
 
   if (!user) return <div>Not logged in</div>;
 
@@ -61,11 +67,15 @@ export default function UserProfilePage() {
       </div>
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-2">Allergies</h2>
-        <IngredientPicker
-          availableIngredients={ingredients}
-          pickedIngredients={pickedAllergies}
-          onSelection={handlePickedAllergies}
-        />
+        {error ? (
+          <GenericError text={error} />
+        ) : (
+          <IngredientPicker
+            availableIngredients={ingredients}
+            pickedIngredients={pickedAllergies}
+            onSelection={handlePickedAllergies}
+          />
+        )}
       </div>
     </main>
   );

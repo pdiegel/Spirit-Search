@@ -7,6 +7,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const ingredientName = req.nextUrl.searchParams.get("name");
   let data;
 
+  if (process.env.NODE_ENV === "development") {
+    return NextResponse.json([]);
+  }
+
   if (cocktailId) {
     data = await client.fetchCocktailById(cocktailId);
   } else if (ingredientName) {

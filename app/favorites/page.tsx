@@ -6,15 +6,18 @@ import { User } from "../page";
 import { useEffect, useState } from "react";
 import { Cocktail } from "@/interfaces/cocktails";
 import CocktailGrid from "@/components/cocktailGrid";
+import Loading from "@/components/loading";
+import GenericError from "@/components/errors/genericError";
 
 export default function FavoriteCocktailsPage() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const [userData, setUserData] = useState({
     sub: user?.sub,
     allergies: [],
     favoriteCocktails: [],
   } as User);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (user?.sub) {
@@ -26,6 +29,9 @@ export default function FavoriteCocktailsPage() {
       fetch("/api/cocktails")
         .then((res) => res.json())
         .then((data) => {
+          if (data.length === 0) {
+            setError("Error fetching cocktails");
+          }
           setCocktails(data);
         });
     }
@@ -50,6 +56,13 @@ export default function FavoriteCocktailsPage() {
     setUserData(newUserData);
     updateUserData(newUserData);
   };
+
+  if (isLoading || (cocktails.length === 0 && !error)) return <Loading />;
+
+  // Cocktails were unabled to be fetched
+  if (error) {
+    return <GenericError text={error} />;
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
