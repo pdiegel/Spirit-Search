@@ -7,6 +7,7 @@ import { Cocktail } from "@/interfaces/cocktails";
 import Loading from "@/components/loading";
 import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
+import GenericError from "@/components/errors/genericError";
 
 export interface User {
   sub: string;
@@ -29,11 +30,15 @@ export default function Home() {
     favoriteCocktails: [] as string[],
   } as User);
   const [cocktailFilter, setCocktailFilter] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/cocktails")
       .then((res) => res.json())
       .then((data) => {
+        if (data.length === 0) {
+          setError("Error fetching cocktails");
+        }
         setCocktails(data);
       });
 
@@ -87,7 +92,9 @@ export default function Home() {
     updateUserData(newUserData);
   };
 
-  if (isLoading || cocktails.length === 0) return <Loading />;
+  if (isLoading || (cocktails.length === 0 && !error)) return <Loading />;
+
+  if (error) return <GenericError text={error} />;
 
   let filteredCocktails = cocktailDbClient.filterCocktails(
     pickedIngredients,

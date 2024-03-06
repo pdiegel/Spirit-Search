@@ -128,12 +128,19 @@ export class CocktailDbClient {
   }
 
   async fetchAllCocktails(): Promise<Cocktail[]> {
-    const request = await fetch(`${this.baseUrl}/search.php?s=`, {
-      next: { revalidate: this.revalidateSeconds },
-    });
-    const data = await request.json();
-
-    return this.formatCocktails(data.drinks);
+    try {
+      const response = await fetch(`${this.baseUrl}/search.php?s=`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (!data) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
 
   async fetchCocktailsByIngredient(ingredient: string): Promise<Cocktail[]> {
@@ -145,6 +152,9 @@ export class CocktailDbClient {
         }
       );
       const data = await response.json();
+      if (!data) {
+        return [];
+      }
       return this.formatCocktails(data.drinks);
     } catch (error) {
       console.error(error);
@@ -158,6 +168,9 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
+      if (!data) {
+        return {} as Cocktail;
+      }
       return this.formatCocktails(data.drinks)[0];
     } catch (error) {
       console.error(error);
@@ -185,11 +198,14 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
+      if (!data) {
+        return [];
+      }
       return data.drinks.map(
         (cocktail: OriginalCocktail) => cocktail.strIngredient1
       );
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
       return [];
     }
   }
@@ -200,6 +216,9 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
+      if (!data) {
+        return {} as Ingredient;
+      }
       return this.remapIngredients(data.ingredients)[0];
     } catch (error) {
       console.error(error);
