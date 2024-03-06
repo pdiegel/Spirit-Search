@@ -133,7 +133,7 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      if (!data) {
+      if (data.drinks.length === 0) {
         return [];
       }
       return this.formatCocktails(data.drinks);
@@ -152,7 +152,7 @@ export class CocktailDbClient {
         }
       );
       const data = await response.json();
-      if (!data) {
+      if (data.drinks.length === 0) {
         return [];
       }
       return this.formatCocktails(data.drinks);
@@ -168,7 +168,7 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      if (!data) {
+      if (data.drinks.length === 0) {
         return {} as Cocktail;
       }
       return this.formatCocktails(data.drinks)[0];
@@ -198,7 +198,7 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      if (!data) {
+      if (data.drinks.length === 0) {
         return [];
       }
       return data.drinks.map(
@@ -216,7 +216,7 @@ export class CocktailDbClient {
         next: { revalidate: this.revalidateSeconds },
       });
       const data = await response.json();
-      if (!data) {
+      if (data.ingredients.length === 0) {
         return {} as Ingredient;
       }
       return this.remapIngredients(data.ingredients)[0];
