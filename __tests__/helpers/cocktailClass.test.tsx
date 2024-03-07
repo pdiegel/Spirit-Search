@@ -5,6 +5,12 @@ import { Ingredient } from "@/interfaces/ingredient";
 
 beforeEach(() => {
   fetchMock.resetMocks();
+  jest.spyOn(console, "error").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  // Restore console.error after each test
+  (console.error as jest.Mock).mockRestore();
 });
 
 const API_KEY = process.env.NEXT_COCKTAIL_DB_API_KEY;
