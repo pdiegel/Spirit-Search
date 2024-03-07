@@ -5,24 +5,35 @@ import DropDownSelector from "./dropDownSelector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const genericLinks = [
-  { href: "/", label: "Search" },
-  { href: "/about", label: "About" },
+interface HomeLink {
+  href: string;
+  label: string;
+  ariaLabel: string;
+}
+
+export const genericLinks: HomeLink[] = [
+  { href: "/", label: "Search", ariaLabel: "Search for spirits" },
+  { href: "/about", label: "About", ariaLabel: "About this site" },
 ];
 
-const loggedInLinks = [
-  { href: "/user", label: "Profile" },
-  { href: "/favorites", label: "Favorites" },
+export const loggedInLinks: HomeLink[] = [
+  { href: "/user", label: "Profile", ariaLabel: "User profile" },
+  { href: "/favorites", label: "Favorites", ariaLabel: "Favorite spirits" },
 ];
+
+export const activeLinkStyle =
+  "bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out text-[#333]";
+export const linkStyle =
+  "bg-transparent hover:bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out";
 
 export default function Header() {
-  const { user, error, isLoading } = useUser();
+  const { user } = useUser();
   const pathname = usePathname();
 
   const loggedIn = user ? true : false;
 
   const userDisplay = loggedIn && (
-    <Link href={`/user`}>
+    <Link href={`/user`} aria-label="User portrait">
       <Image
         src={user?.picture || ""}
         alt={user?.nickname || "User"}
@@ -39,11 +50,6 @@ export default function Header() {
     <Link href="/api/auth/login">Login</Link>
   );
 
-  const currentLinkStyle =
-    "bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out text-[#333]";
-  const linkStyle =
-    "bg-transparent hover:bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out";
-
   const userLinkDisplay =
     loggedIn &&
     loggedInLinks.map((link) => {
@@ -51,8 +57,9 @@ export default function Header() {
         <Link
           key={link.href}
           href={link.href}
+          aria-label={link.ariaLabel}
           className={`${
-            pathname === link.href ? currentLinkStyle : linkStyle
+            pathname === link.href ? activeLinkStyle : linkStyle
           } hover:text-[#333]`}
         >
           {link.label}
@@ -64,8 +71,9 @@ export default function Header() {
     <Link
       key={link.href}
       href={link.href}
+      aria-label={link.ariaLabel}
       className={`${
-        pathname === link.href ? currentLinkStyle : linkStyle
+        pathname === link.href ? activeLinkStyle : linkStyle
       } hover:text-[#333]`}
     >
       {link.label}
