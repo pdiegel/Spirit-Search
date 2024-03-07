@@ -36,6 +36,7 @@ export default function Home() {
     fetch("/api/cocktails")
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.length === 0) {
           setError("Error fetching cocktails");
         }

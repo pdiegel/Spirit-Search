@@ -44,7 +44,7 @@ Add this Environment Variable to a .env file in the root directory:
 
 ```sh
 # This is required for development purposes.
-NODE_ENV=development
+NEXT_PUBLIC_NODE_ENV=development
 ```
 
 ### Usage
