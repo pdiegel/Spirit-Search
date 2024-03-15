@@ -2,23 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --primary: #151515;
+    --primary-dark: rgba(0, 0, 0, 0.5);
+    --secondary: #FFDF64;
+    --text-primary: #CCC;
+    --text-secondary: var(--primary);
+}
+
+html {
+    font-size: 16px;
+}
+
 header,
 footer {
-    background-color: #333;
-    color: #eee;
+    background-color: var(--primary);
 }
 
+header,
+footer,
 main {
-    color: #333;
-}
-
-.wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
+    color: var(--text-primary);
 }
 
 .hidden {
     display: none;
+}
+
+.button-primary,
+.button-secondary {
+    padding: 10px 20px;
+}
+
+.button-secondary,
+.button-tertiary {
+    color: var(--text-primary);
+}
+
+.button-primary,
+.button-tertiary.active {
+    color: var(--primary);
+}
+
+.button-primary {
+    background-color: var(--secondary);
+}
+
+.button-secondary {
+    background-color: transparent;
+    border: 1px solid var(--secondary);
+}
+
+.button-tertiary {
+    background-color: var(--primary);
+    padding: 10px 15px;
+}
+
+.button-tertiary.active {
+    background-color: var(--text-primary);
 }
 
 @layer utilities {
