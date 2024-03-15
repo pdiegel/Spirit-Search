@@ -111,19 +111,22 @@ export class CocktailDbClient {
   }
 
   filterCocktails(
-    ingredients: string[],
     allergies: string[],
-    cocktails: Cocktail[]
+    cocktails: Cocktail[],
+    ingredients: string[] = [] as string[]
   ): Cocktail[] {
     let filteredCocktails = cocktails;
-    filteredCocktails = this.filterCocktailsByIngredients(
-      filteredCocktails,
-      ingredients
-    );
     filteredCocktails = this.filterCocktailsByAllergies(
       filteredCocktails,
       allergies
     );
+
+    if (ingredients.length > 0) {
+      filteredCocktails = this.filterCocktailsByIngredients(
+        filteredCocktails,
+        ingredients
+      );
+    }
     return filteredCocktails;
   }
 

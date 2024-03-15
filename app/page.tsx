@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import IngredientPicker from "@/components/ingredientPicker";
+import HeroSection from "@/components/heroSection";
 import CocktailGrid from "@/components/cocktailGrid";
 import { Cocktail } from "@/interfaces/cocktails";
 import Loading from "@/components/loading";
 import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
 import GenericError from "@/components/errors/genericError";
+import HomeImg from "@/public/heroImages/home.jpg";
 
 export interface User {
   sub: string;
@@ -15,15 +16,14 @@ export interface User {
   favoriteCocktails: string[];
 }
 
-// 28 is a Multiple of 2, 4 and 7. Creates a nice grid layout
-const numCocktailsToDisplay = 28;
+// 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
+const numCocktailsToDisplay = 12;
 const cocktailDbClient = new CocktailDbClient();
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const { user, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
-  const [pickedIngredients, setPickedIngredients] = useState([] as string[]);
   const [userData, setUserData] = useState({
     sub: user?.sub,
     allergies: [] as string[],
@@ -53,7 +53,7 @@ export default function Home() {
 
   useEffect(() => {
     setLowerCocktailIndex(0);
-  }, [pickedIngredients]);
+  }, [cocktails]);
 
   const handlePrevious = (): void => {
     setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
@@ -61,16 +61,6 @@ export default function Home() {
 
   const handleNext = (): void => {
     setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
-  };
-
-  const handlePickedIngredients = (i: string): void => {
-    if (pickedIngredients.includes(i)) {
-      setPickedIngredients(
-        pickedIngredients.filter((ingredient) => ingredient !== i)
-      );
-      return;
-    }
-    setPickedIngredients((prevIngredients) => [...prevIngredients, i]);
   };
 
   const handleFavorite = (cocktailId: string): void => {
@@ -98,13 +88,9 @@ export default function Home() {
   if (error) return <GenericError text={error} />;
 
   let filteredCocktails = cocktailDbClient.filterCocktails(
-    pickedIngredients,
     userData.allergies,
     cocktails
   );
-
-  const filteredIngredients =
-    cocktailDbClient.getUniqueCocktailIngredients(filteredCocktails);
 
   filteredCocktails = cocktailFilter
     ? filteredCocktails.filter((cocktail) =>
@@ -113,25 +99,18 @@ export default function Home() {
     : filteredCocktails;
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
-      {/* Ingredient Picker */}
-      {filteredIngredients && (
-        <div className="w-full overflow-hidden">
-          <IngredientPicker
-            availableIngredients={filteredIngredients}
-            pickedIngredients={pickedIngredients}
-            onSelection={handlePickedIngredients}
-          />
-        </div>
-      )}
-
+    <main className="flex min-h-screen flex-col items-center bg-accent">
+      <HeroSection
+        title="Discover Your Next Favorite Cocktail"
+        description="Explore a world of cocktails tailored to your taste. Use your own ingredients to search and find your perfect mix, from timeless classics to innovative modern twists. Your adventure in flavor starts now."
+        bgImage={HomeImg}
+        buttons={[
+          { text: "Start Exploring", href: "/explore" },
+          { text: "Learn More", href: "/about" },
+        ]}
+      />
       {/* Cocktail Grid */}
       <div className="w-full">
-        <h1 className="text-2xl font-bold mt-6">
-          {pickedIngredients.length > 0
-            ? "Cocktails with selected ingredients"
-            : "All Cocktails"}
-        </h1>
         <input
           type="text"
           className="px-2 py-1 rounded-md mt-2 mb-2 border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"

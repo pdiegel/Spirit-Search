@@ -1,11 +1,10 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
 interface HeroSectionProps {
   title: string;
   description: string;
-  bgImage: string;
-  bgOpacity?: number;
+  bgImage: StaticImageData;
   buttons?: { text: string; href: string }[];
   fgImage?: string;
   fgImageAlt?: string;
@@ -16,7 +15,6 @@ export default function HeroSection({
   title,
   description,
   bgImage,
-  bgOpacity = 100,
   buttons,
   fgImage,
   fgImageAlt,
@@ -26,11 +24,19 @@ export default function HeroSection({
 
   return (
     <section
-      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-20 py-50 sm:p-50 lg:px-240 lg:py-100 bg-cover bg-center bg-no-repeat bg-opacity-${bgOpacity}`}
-      style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
+      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-[20px] py-[50px] sm:p-[50px] lg:px-[240px] lg:py-[100px] bg-cover bg-center bg-no-repeat w-full`}
+      style={bgImage ? { backgroundImage: `url(${bgImage.src})` } : {}}
     >
-      {title && <h1 className="text-4xl lg:text-6xl">{title}</h1>}
-      {description && <p className="text-base">{description}</p>}
+      {title && (
+        <h1 className="text-4xl lg:text-6xl sm:max-w-[400px] lg:max-w-[600px]">
+          {title}
+        </h1>
+      )}
+      {description && (
+        <p className="text-base sm:max-w-[400px] lg:max-w-[600px]">
+          {description}
+        </p>
+      )}
       {fgImage && (
         <Image
           src={fgImage}
@@ -48,7 +54,7 @@ export default function HeroSection({
             return (
               <Link
                 key={index}
-                className={`${btnClass} text-base`}
+                className={`${btnClass} text-base rounded-xl`}
                 href={button.href}
               >
                 {button.text}

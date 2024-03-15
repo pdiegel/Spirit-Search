@@ -6,8 +6,15 @@
     --primary: #151515;
     --primary-dark: rgba(0, 0, 0, 0.5);
     --secondary: #FFDF64;
+    --secondary-bright: hsl(48, 100%, 90%);
     --text-primary: #CCC;
     --text-secondary: var(--primary);
+    --button-padding-x: 20px;
+    --button-padding-y: 10px;
+    --button-padding: var(--button-padding-y) var(--button-padding-x);
+    --hover-arrow-start-distance: -40px;
+    --hover-arrow-end-distance: var(--button-padding-x);
+    --hover-arrow-move-distance: calc(var(--hover-arrow-end-distance) - var(--hover-arrow-start-distance));
 }
 
 html {
@@ -29,9 +36,36 @@ main {
     display: none;
 }
 
+a {
+    border: 1px solid transparent;
+    transition: color 0.5s, background-color 0.5s, padding 0.3s;
+    position: relative;
+}
+
+.button-primary:after,
+.button-secondary:after {
+    content: '>';
+    position: absolute;
+    opacity: 0;
+    top: 10px;
+    right: var(--hover-arrow-start-distance);
+    transition: opacity 0.3s, right 0.3s;
+}
+
+.button-primary:hover:after,
+.button-secondary:hover:after {
+    opacity: 1;
+    right: var(--hover-arrow-end-distance);
+}
+
+.button-primary:hover,
+.button-secondary:hover {
+    padding-right: calc(var(--hover-arrow-move-distance));
+}
+
 .button-primary,
 .button-secondary {
-    padding: 10px 20px;
+    padding: var(--button-padding);
 }
 
 .button-secondary,
@@ -61,6 +95,7 @@ main {
 .button-tertiary.active {
     background-color: var(--text-primary);
 }
+
 
 @layer utilities {
     .text-balance {
