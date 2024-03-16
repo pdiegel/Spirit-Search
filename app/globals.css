@@ -21,6 +21,34 @@ html {
     font-size: 16px;
 }
 
+body {
+    background-color: var(--primary);
+}
+
+h3,
+p,
+a,
+button {
+    font-weight: 400;
+}
+
+a,
+button,
+img {
+    /* This is the same as rounded-lg in tailwindcss */
+    border-radius: 0.5rem;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
 header,
 footer {
     background-color: var(--primary);
@@ -30,6 +58,10 @@ header,
 footer,
 main {
     color: var(--text-primary);
+}
+
+section {
+    padding: 50px 20px;
 }
 
 .hidden {
@@ -66,6 +98,7 @@ a {
 .button-primary,
 .button-secondary {
     padding: var(--button-padding);
+    overflow: hidden;
 }
 
 .button-secondary,

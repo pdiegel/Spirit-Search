@@ -9,6 +9,10 @@ import { updateUserData, getUserData } from "@/helpers/mongodbFuncs";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
 import GenericError from "@/components/errors/genericError";
 import HomeImg from "@/public/heroImages/home.jpg";
+import CocktailBarImg from "@/public/flavorImages/cocktailBar.webp";
+import HeaderWithText from "@/components/headerWithText";
+import GenericSection from "@/components/genericSection";
+import Image from "next/image";
 
 export interface User {
   sub: string;
@@ -101,14 +105,25 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-accent">
       <HeroSection
-        title="Discover Your Next Favorite Cocktail"
-        description="Explore a world of cocktails tailored to your taste. Use your own ingredients to search and find your perfect mix, from timeless classics to innovative modern twists. Your adventure in flavor starts now."
+        heading="Discover Your Next Favorite Cocktail"
+        pText="Explore a world of cocktails tailored to your taste. Use your own ingredients to search and find your perfect mix, from timeless classics to innovative modern twists. Your adventure in flavor starts now."
         bgImage={HomeImg}
         buttons={[
           { text: "Start Exploring", href: "/explore" },
           { text: "Learn More", href: "/about" },
         ]}
       />
+      <GenericSection containsImg>
+        <Image src={CocktailBarImg} alt="Cocktail Bar" />
+        <HeaderWithText
+          header="How It Works"
+          textContents={[
+            "Choose Your Spirit - Select from a wide range of spirits to find cocktails you’ll love.",
+            "Discover Recipes - Explore curated cocktail recipes that match your taste.",
+            "Mix & Enjoy - Follow easy steps to mix your perfect cocktail at home.",
+          ]}
+        />
+      </GenericSection>
       {/* Cocktail Grid */}
       <div className="w-full">
         <input

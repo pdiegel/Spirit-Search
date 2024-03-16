@@ -2,8 +2,8 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
 interface HeroSectionProps {
-  title: string;
-  description: string;
+  heading: string;
+  pText: string;
   bgImage: StaticImageData;
   buttons?: { text: string; href: string }[];
   fgImage?: string;
@@ -12,8 +12,8 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  title,
-  description,
+  heading,
+  pText,
   bgImage,
   buttons,
   fgImage,
@@ -24,19 +24,19 @@ export default function HeroSection({
 
   return (
     <section
-      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-[20px] py-[50px] sm:p-[50px] lg:px-[240px] lg:py-[100px] bg-cover bg-center bg-no-repeat w-full`}
+      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-[20px] py-[50px] sm:p-[50px] lg:px-[240px] lg:py-[70px] bg-cover bg-center bg-no-repeat w-full`}
       style={bgImage ? { backgroundImage: `url(${bgImage.src})` } : {}}
     >
-      {title && (
-        <h1 className="text-4xl lg:text-6xl sm:max-w-[400px] lg:max-w-[600px]">
-          {title}
-        </h1>
-      )}
-      {description && (
-        <p className="text-base sm:max-w-[400px] lg:max-w-[600px]">
-          {description}
-        </p>
-      )}
+      <div className="flex flex-col gap-[10px] sm:gap-[15px] lg:gap-[20px]">
+        {heading && (
+          <h1 className="text-4xl lg:text-6xl sm:max-w-[400px] lg:max-w-[600px]">
+            {heading}
+          </h1>
+        )}
+        {pText && (
+          <p className="text-base sm:max-w-[400px] lg:max-w-[50ch]">{pText}</p>
+        )}
+      </div>
       {fgImage && (
         <Image
           src={fgImage}
@@ -52,11 +52,7 @@ export default function HeroSection({
             let btnClass =
               index % 2 === 0 ? "button-primary" : "button-secondary";
             return (
-              <Link
-                key={index}
-                className={`${btnClass} text-base rounded-xl`}
-                href={button.href}
-              >
+              <Link key={index} className={`${btnClass}`} href={button.href}>
                 {button.text}
               </Link>
             );
