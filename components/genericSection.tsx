@@ -11,7 +11,9 @@ export default function GenericSection({
 }) {
   return (
     <section
-      className={`grid grid-cols-1 sm:grid-cols-2 gap-[20px] sm:gap-[30px] lg:gap-[40px] items-center ${
+      className={`w-full grid grid-cols-1 ${
+        containsImg ? "sm:grid-cols-2" : ""
+      } gap-[20px] sm:gap-[30px] lg:gap-[40px] items-center ${
         darkBgColor ? "bg-primaryDark/50" : ""
       } ${
         containsImg ? "sm:flex-row sm:gap-[70px] lg:gap-[90px]" : ""

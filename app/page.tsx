@@ -124,7 +124,15 @@ export default function Home() {
           ]}
         />
       </GenericSection>
-      {/* Cocktail Grid */}
+      <GenericSection darkBgColor>
+        <HeaderWithText
+          header="Browse Our Popular Categories"
+          textContents={[
+            "Effortlessly find your next favorite cocktail. From timeless classics to intriguing unknowns, our selection spans every corner of the cocktail world. Discover your preference.",
+          ]}
+          textAlignment="center"
+        />
+      </GenericSection>
       <div className="w-full">
         <input
           type="text"

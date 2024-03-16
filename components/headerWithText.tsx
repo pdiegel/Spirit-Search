@@ -31,7 +31,7 @@ export default function HeaderWithText({
       {textContents.map((text, index) => (
         <div
           key={index}
-          className={`${
+          className={`text-${textAlignment} mx-auto ${
             subHeadings.length > 0
               ? `sm:${subHeadingBgColor} sm:p-[15px] sm:rounded-lg lg:p-[20px]`
               : ""
