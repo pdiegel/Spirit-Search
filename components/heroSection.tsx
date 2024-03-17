@@ -24,7 +24,7 @@ export default function HeroSection({
 
   return (
     <section
-      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-[20px] py-[50px] sm:p-[50px] lg:px-[240px] lg:py-[70px] bg-cover bg-center bg-no-repeat w-full`}
+      className={`flex flex-col gap-[20px] sm:gap-[30px] lg:gap-[40px] text-${textAlignment} ${itemAlignment} px-[20px] py-[50px] sm:p-[50px] lg:px-[240px] lg:py-[70px] xl:px-[300px] bg-cover bg-center bg-no-repeat w-full`}
       style={bgImage ? { backgroundImage: `url(${bgImage.src})` } : {}}
     >
       <div className="flex flex-col gap-[10px] sm:gap-[15px] lg:gap-[20px]">
@@ -47,7 +47,7 @@ export default function HeroSection({
         />
       )}
       {buttons && (
-        <div className="flex flex-col sm:flex-row gap-[10px] sm:gap-[15px] lg:gap-[20px]">
+        <nav className="flex flex-col sm:flex-row gap-[10px] sm:gap-[15px] lg:gap-[20px]">
           {buttons.map((button, index) => {
             let btnClass =
               index % 2 === 0 ? "button-primary" : "button-secondary";
@@ -57,7 +57,7 @@ export default function HeroSection({
               </Link>
             );
           })}
-        </div>
+        </nav>
       )}
     </section>
   );

@@ -1,9 +1,9 @@
 "use client";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Image from "next/image";
 import DropDownSelector from "./dropDownSelector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 interface HomeLink {
   href: string;
@@ -28,8 +28,32 @@ export const linkStyle =
   "bg-transparent hover:bg-white transition-background-color duration-200 ease-in-out";
 
 export default function Header() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
   const { user } = useUser();
   const pathname = usePathname();
+
+  const controlHeaderVisibility = () => {
+    if (typeof window !== "undefined") {
+      // Check the current scroll position
+      const currentScrollPos = window.scrollY;
+
+      // Determine whether to show or hide the header
+      setIsVisible(lastScrollPos > currentScrollPos || currentScrollPos < 10);
+      // Update the last scroll position
+      setLastScrollPos(currentScrollPos);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlHeaderVisibility);
+
+      return () => {
+        window.removeEventListener("scroll", controlHeaderVisibility);
+      };
+    }
+  }, [lastScrollPos]);
 
   const loggedIn = user ? true : false;
 
@@ -74,7 +98,10 @@ export default function Header() {
   ));
 
   return (
-    <header className="md:py-[36px] md:px-[50px] lg:px-[100px] w-full">
+    <header
+      className="md:py-[36px] md:px-[50px] lg:px-[100px] w-full"
+      style={isVisible ? { top: "0" } : { top: "-150px" }}
+    >
       <nav className="flex items-center justify-between">
         {/* Screens less than 640px wide */}
         <div className="sm:hidden">

@@ -131,22 +131,44 @@ export default function Home() {
       </GenericSection>
       <GenericSection darkBgColor>
         <HeaderWithText
-          header="Browse Our Popular Categories"
+          header="Explore Our Curated Collections"
           textContents={[
-            "Effortlessly find your next favorite cocktail. From timeless classics to intriguing unknowns, our selection spans every corner of the cocktail world. Discover your preference.",
+            "Dive into the heart of mixology with just a click. Whether you're in the mood for crowd-pleasers, the newest concoctions, or a surprise mix with our random selection, your perfect cocktail awaits. Embrace the adventure of discovery.",
           ]}
           textAlignment="center"
         />
-        {filteredCocktails.length > 0 && (
-          <CocktailGrid
-            cocktails={filteredCocktails.slice(
-              lowerCocktailIndex,
-              lowerCocktailIndex + numCocktailsToDisplay
-            )}
-            favoriteCocktails={userData.favoriteCocktails}
-            onFavorite={handleFavorite}
-          />
-        )}
+        <div className="flex flex-col">
+          {filteredCocktails.length > 0 && (
+            <CocktailGrid
+              cocktails={filteredCocktails.slice(
+                lowerCocktailIndex,
+                lowerCocktailIndex + numCocktailsToDisplay
+              )}
+              favoriteCocktails={userData.favoriteCocktails}
+              onFavorite={handleFavorite}
+            />
+          )}
+        </div>
+        {/* Pagination buttons */}
+        <div className="flex justify-between w-full my-4">
+          <button
+            onClick={handlePrevious}
+            disabled={lowerCocktailIndex < numCocktailsToDisplay}
+            className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={
+              lowerCocktailIndex >
+              filteredCocktails.length - numCocktailsToDisplay
+            }
+            className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav"
+          >
+            Next
+          </button>
+        </div>
       </GenericSection>
       <div className="w-full">
         <input
@@ -161,27 +183,6 @@ export default function Home() {
           className="bg-red-500 text-white px-2 py-1 ml-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
         >
           Clear
-        </button>
-      </div>
-
-      {/* Pagination buttons */}
-      <div className="flex justify-between w-full my-4">
-        <button
-          onClick={handlePrevious}
-          disabled={lowerCocktailIndex < numCocktailsToDisplay}
-          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary p-2 rounded-md text-white"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={
-            lowerCocktailIndex >
-            filteredCocktails.length - numCocktailsToDisplay
-          }
-          className="disabled:opacity-50 disabled:cursor-not-allowed bg-secondary p-2 rounded-md text-white"
-        >
-          Next
         </button>
       </div>
     </main>

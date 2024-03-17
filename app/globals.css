@@ -54,6 +54,11 @@ button {
 
 header {
     padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 0 10px var(--primary-dark);
+    transition: top 0.3s;
 }
 
 header,
@@ -67,22 +72,21 @@ main {
     color: var(--text-primary);
 }
 
-section {
-    padding: 50px 20px;
-}
-
 .hidden {
     display: none;
 }
 
 nav a {
     border: 1px solid transparent;
-    transition: color 0.5s, background-color 0.5s, padding 0.3s;
-    position: relative;
 }
 
-.button-primary:after,
-.button-secondary:after {
+a {
+    position: relative;
+    transition: color 0.5s, background-color 0.5s, padding 0.3s;
+}
+
+nav .button-primary:after,
+nav .button-secondary:after {
     content: '>';
     position: absolute;
     opacity: 0;
@@ -91,15 +95,26 @@ nav a {
     transition: opacity 0.3s, right 0.3s;
 }
 
-.button-primary:hover:after,
-.button-secondary:hover:after {
+nav .button-primary:hover:after,
+nav .button-secondary:hover:after {
     opacity: 1;
     right: var(--hover-arrow-end-distance);
 }
 
-.button-primary:hover,
-.button-secondary:hover {
+nav .button-primary:hover,
+nav .button-secondary:hover {
     padding-right: calc(var(--hover-arrow-move-distance));
+}
+
+.button-primary.outside-nav:hover {
+    background-color: var(--primary);
+    border: 1px solid var(--secondary);
+    color: var(--text-primary);
+}
+
+.button-secondary.outside-nav:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
 }
 
 .button-primary,
@@ -107,6 +122,8 @@ nav a {
     padding: var(--button-padding);
     /* overflow hidden to hide the arrow when the button is no longer hovered */
     overflow: hidden;
+    border: 1px solid transparent;
+    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
 }
 
 .button-secondary,

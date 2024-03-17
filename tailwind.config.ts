@@ -20,6 +20,9 @@ const config: Config = {
       maxHeight: {
         "80vh": "80vh",
       },
+      textColor: {
+        primary: "#151515",
+      },
       plugins: [],
     },
     darkmode: "class",
