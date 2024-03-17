@@ -14,6 +14,9 @@ const config: Config = {
         secondary: "#FFDF64",
         textPrimary: "#CCC",
       },
+      borderColor: {
+        primaryDark: "#000",
+      },
       maxHeight: {
         "80vh": "80vh",
       },

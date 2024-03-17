@@ -39,12 +39,14 @@ img {
     border-radius: 0.5rem;
 }
 
-section img {
+.largeImg {
     width: 100%;
     height: auto;
+    max-height: 350px;
+    min-height: 250px;
 }
 
-a,
+nav a,
 button {
     cursor: pointer;
     padding: 5px 10px;
@@ -73,7 +75,7 @@ section {
     display: none;
 }
 
-a {
+nav a {
     border: 1px solid transparent;
     transition: color 0.5s, background-color 0.5s, padding 0.3s;
     position: relative;

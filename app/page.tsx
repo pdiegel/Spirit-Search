@@ -118,7 +118,7 @@ export default function Home() {
           src={CocktailBarImg}
           alt="Cocktail Bar"
           placeholder="blur"
-          priority
+          className="largeImg"
         />
         <HeaderWithText
           header="How It Works"
@@ -137,6 +137,16 @@ export default function Home() {
           ]}
           textAlignment="center"
         />
+        {filteredCocktails.length > 0 && (
+          <CocktailGrid
+            cocktails={filteredCocktails.slice(
+              lowerCocktailIndex,
+              lowerCocktailIndex + numCocktailsToDisplay
+            )}
+            favoriteCocktails={userData.favoriteCocktails}
+            onFavorite={handleFavorite}
+          />
+        )}
       </GenericSection>
       <div className="w-full">
         <input
@@ -153,16 +163,6 @@ export default function Home() {
           Clear
         </button>
       </div>
-      {filteredCocktails.length > 0 && (
-        <CocktailGrid
-          cocktails={filteredCocktails.slice(
-            lowerCocktailIndex,
-            lowerCocktailIndex + numCocktailsToDisplay
-          )}
-          favoriteCocktails={userData.favoriteCocktails}
-          onFavorite={handleFavorite}
-        />
-      )}
 
       {/* Pagination buttons */}
       <div className="flex justify-between w-full my-4">
