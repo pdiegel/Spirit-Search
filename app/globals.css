@@ -98,6 +98,7 @@ a {
 .button-primary,
 .button-secondary {
     padding: var(--button-padding);
+    /* overflow hidden to hide the arrow when the button is no longer hovered */
     overflow: hidden;
 }
 

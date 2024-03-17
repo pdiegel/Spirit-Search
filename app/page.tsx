@@ -114,7 +114,12 @@ export default function Home() {
         ]}
       />
       <GenericSection containsImg>
-        <Image src={CocktailBarImg} alt="Cocktail Bar" />
+        <Image
+          src={CocktailBarImg}
+          alt="Cocktail Bar"
+          placeholder="blur"
+          priority
+        />
         <HeaderWithText
           header="How It Works"
           textContents={[
