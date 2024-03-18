@@ -1,6 +1,18 @@
 import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
 import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
+// Words that should not be included in any cocktail names
+const profanityWords = new Set([
+  "fuck",
+  "f**k",
+  "ass",
+  "cum",
+  "shit",
+  "sex",
+  "kiss me",
+  "orgasm",
+]);
+
 export class CocktailDbClient {
   // Revalidate every 10 hours
   private revalidateSeconds = 36000;
@@ -127,6 +139,13 @@ export class CocktailDbClient {
         ingredients
       );
     }
+
+    filteredCocktails = filteredCocktails.filter((cocktail) => {
+      const wordsInName = cocktail.name.toLowerCase().split(/\s+/); // Split by any whitespace
+      return ![...profanityWords].some((word) =>
+        wordsInName.includes(word.toLowerCase())
+      );
+    });
     return filteredCocktails;
   }
 

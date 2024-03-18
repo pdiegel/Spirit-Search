@@ -34,7 +34,6 @@ export default function Home() {
     allergies: [] as string[],
     favoriteCocktails: [] as string[],
   } as User);
-  const [cocktailFilter, setCocktailFilter] = useState("");
   const [error, setError] = useState("");
   const [cocktailCategory, setCocktailCategory] = useState("Popular");
 
@@ -104,12 +103,6 @@ export default function Home() {
     userData.allergies,
     cocktails
   );
-
-  filteredCocktails = cocktailFilter
-    ? filteredCocktails.filter((cocktail) =>
-        cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
-      )
-    : filteredCocktails;
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-accent">
@@ -194,21 +187,6 @@ export default function Home() {
           </div>
         </div>
       </GenericSection>
-      <div className="w-full">
-        <input
-          type="text"
-          className="px-2 py-1 rounded-md border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
-          onChange={(e) => setCocktailFilter(e.target.value)}
-          value={cocktailFilter}
-          placeholder="Search for a cocktail"
-        />
-        <button
-          onClick={() => setCocktailFilter("")}
-          className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
-        >
-          Clear
-        </button>
-      </div>
     </main>
   );
 }
