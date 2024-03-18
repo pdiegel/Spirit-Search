@@ -264,7 +264,8 @@ export class CocktailDbClient {
   async fetchRandomCocktails(): Promise<Cocktail[]> {
     try {
       const response = await fetch(`${this.baseUrl}/randomselection.php`, {
-        next: { revalidate: this.revalidateSeconds },
+        // Always fetch new data for random cocktails
+        next: { revalidate: 1 },
       });
       const data = await response.json();
       if (data.drinks.length === 0) {

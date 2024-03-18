@@ -99,7 +99,7 @@ export default function Header() {
 
   return (
     <header
-      className="md:py-[36px] md:px-[50px] lg:px-[100px] w-full"
+      className="md:py-[20px] md:px-[50px] lg:px-[100px] w-full"
       style={isVisible ? { top: "0" } : { top: "-150px" }}
     >
       <nav className="flex items-center justify-between">

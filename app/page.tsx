@@ -140,9 +140,9 @@ export default function Home() {
       </GenericSection>
       <GenericSection darkBgColor>
         <HeaderWithText
-          header="Explore Our Curated Collections"
+          header="Our Curated Collections"
           textContents={[
-            "Dive into the heart of mixology with just a click. Whether you're in the mood for crowd-pleasers, the newest concoctions, or a surprise mix with our random selection, your perfect cocktail awaits. Embrace the adventure of discovery.",
+            "Explore popular favorites, discover the latest creations, or let chance guide you. Your next drink is just a click away.",
           ]}
           textAlignment="center"
         />

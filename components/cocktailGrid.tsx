@@ -34,7 +34,7 @@ export default function CocktailGrid({
                 alt={cocktail.name}
                 height={30}
                 width={30}
-                className="absolute top-1/8 left-1/8 cursor-pointer hover:scale-150 transition-transform duration-200 bg-white/40 rounded-t-full rounded-l-full p-1 z-10"
+                className="absolute top-1/8 left-1/8 cursor-pointer hover:scale-150 transition-transform duration-200 bg-white/70 rounded-full p-1 z-10"
               />
             )}
             <Link
