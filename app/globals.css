@@ -155,6 +155,15 @@ nav .button-secondary:hover {
     color: var(--primary);
 }
 
+.button-category {
+    background-color: var(--text-primary);
+    color: var(--primary);
+}
+
+.button-category.active {
+    background-color: var(--secondary-bright);
+}
+
 
 @layer utilities {
     .text-balance {

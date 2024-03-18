@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { User } from "../page";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
@@ -8,8 +8,14 @@ import { Cocktail } from "@/interfaces/cocktails";
 import HeroSection from "@/components/heroSection";
 import ExploreImg from "@/public/heroImages/explore.jpg";
 import { useRouter } from "next/navigation";
+import GenericSection from "@/components/genericSection";
+import FilterDropDown from "@/components/filterDropDown";
+import CocktailGrid from "@/components/cocktailGrid";
 
 const cocktailDbClient = new CocktailDbClient();
+
+// 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
+const numCocktailsToDisplay = 12;
 
 export default function Page() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
@@ -23,6 +29,22 @@ export default function Page() {
     allergies: [] as string[],
     favoriteCocktails: [] as string[],
   } as User);
+
+  useEffect(() => {
+    fetch("/api/cocktails", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data: Cocktail[]) => {
+        setCocktails(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const redirectToRandomCocktailPage = async () => {
     fetch("/api/cocktails?random=true", {
@@ -41,6 +63,27 @@ export default function Page() {
       });
   };
 
+  const handleFavorite = (cocktailId: string): void => {
+    let newUserData;
+    if (userData.favoriteCocktails.includes(cocktailId)) {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: userData.favoriteCocktails.filter(
+          (id) => id !== cocktailId
+        ),
+      };
+    } else {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
+      };
+    }
+  };
+
+  const onFilterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e);
+  };
+
   let filteredCocktails = cocktailDbClient.filterCocktails(
     userData.allergies,
     cocktails
@@ -51,6 +94,7 @@ export default function Page() {
         cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
       )
     : filteredCocktails;
+
   return (
     <main className="flex flex-col min-h-screen items-center">
       <HeroSection
@@ -61,6 +105,23 @@ export default function Page() {
           { text: "Surprise Me!", onClick: redirectToRandomCocktailPage },
         ]}
       />
+      <GenericSection>
+        <FilterDropDown
+          heading="Alcoholic"
+          filters={["Yes", "No"]}
+          selectedFilters={["Yes"]}
+          onFilterClick={onFilterClick}
+        />
+        <CocktailGrid
+          cocktails={filteredCocktails.slice(
+            lowerCocktailIndex,
+            lowerCocktailIndex + numCocktailsToDisplay
+          )}
+          favoriteCocktails={userData.favoriteCocktails}
+          onFavorite={handleFavorite}
+        />
+      </GenericSection>
+
       <div className="w-full">
         <input
           type="text"
