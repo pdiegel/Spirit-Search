@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Quicksand } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Analytics } from "@vercel/analytics/react";
 
-const quicksand = Quicksand({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Spirit Search - Find your next cocktail!",
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={quicksand.className}>
+      <body className={inter.className}>
         <UserProvider>
           <Header />
           {children}

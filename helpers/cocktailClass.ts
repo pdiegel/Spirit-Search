@@ -1,6 +1,18 @@
 import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
 import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
+// Words that should not be included in any cocktail names
+const profanityWords = new Set([
+  "fuck",
+  "f**k",
+  "ass",
+  "cum",
+  "shit",
+  "sex",
+  "kiss me",
+  "orgasm",
+]);
+
 export class CocktailDbClient {
   // Revalidate every 10 hours
   private revalidateSeconds = 36000;
@@ -111,19 +123,29 @@ export class CocktailDbClient {
   }
 
   filterCocktails(
-    ingredients: string[],
     allergies: string[],
-    cocktails: Cocktail[]
+    cocktails: Cocktail[],
+    ingredients: string[] = [] as string[]
   ): Cocktail[] {
     let filteredCocktails = cocktails;
-    filteredCocktails = this.filterCocktailsByIngredients(
-      filteredCocktails,
-      ingredients
-    );
     filteredCocktails = this.filterCocktailsByAllergies(
       filteredCocktails,
       allergies
     );
+
+    if (ingredients.length > 0) {
+      filteredCocktails = this.filterCocktailsByIngredients(
+        filteredCocktails,
+        ingredients
+      );
+    }
+
+    filteredCocktails = filteredCocktails.filter((cocktail) => {
+      const wordsInName = cocktail.name.toLowerCase().split(/\s+/); // Split by any whitespace
+      return ![...profanityWords].some((word) =>
+        wordsInName.includes(word.toLowerCase())
+      );
+    });
     return filteredCocktails;
   }
 
@@ -223,6 +245,55 @@ export class CocktailDbClient {
     } catch (error) {
       console.error(error);
       return {} as Ingredient;
+    }
+  }
+
+  async fetchPopularCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/popular.php`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async fetchNewCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/latest.php`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async fetchRandomCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/randomselection.php`, {
+        // Always fetch new data for random cocktails
+        next: { revalidate: 1 },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   }
 }

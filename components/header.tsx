@@ -1,9 +1,9 @@
 "use client";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Image from "next/image";
 import DropDownSelector from "./dropDownSelector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 interface HomeLink {
   href: string;
@@ -12,7 +12,8 @@ interface HomeLink {
 }
 
 export const genericLinks: HomeLink[] = [
-  { href: "/", label: "Search", ariaLabel: "Search for spirits" },
+  { href: "/", label: "Home", ariaLabel: "Home page" },
+  { href: "/explore", label: "Explore", ariaLabel: "Explore our spirits" },
   { href: "/about", label: "About", ariaLabel: "About this site" },
 ];
 
@@ -22,32 +23,48 @@ export const loggedInLinks: HomeLink[] = [
 ];
 
 export const activeLinkStyle =
-  "bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out text-[#333]";
+  "bg-white transition-background-color duration-200 ease-in-out text-[#333]";
 export const linkStyle =
-  "bg-transparent hover:bg-white rounded px-2 py-1 transition-background-color duration-200 ease-in-out";
+  "bg-transparent hover:bg-white transition-background-color duration-200 ease-in-out";
 
 export default function Header() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
   const { user } = useUser();
   const pathname = usePathname();
 
+  const controlHeaderVisibility = () => {
+    if (typeof window !== "undefined") {
+      // Check the current scroll position
+      const currentScrollPos = window.scrollY;
+
+      // Determine whether to show or hide the header
+      setIsVisible(lastScrollPos > currentScrollPos || currentScrollPos < 10);
+      // Update the last scroll position
+      setLastScrollPos(currentScrollPos);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlHeaderVisibility);
+
+      return () => {
+        window.removeEventListener("scroll", controlHeaderVisibility);
+      };
+    }
+  }, [lastScrollPos]);
+
   const loggedIn = user ? true : false;
 
-  const userDisplay = loggedIn && (
-    <Link href={`/user`} aria-label="User portrait">
-      <Image
-        src={user?.picture || ""}
-        alt={user?.nickname || "User"}
-        width={50}
-        height={50}
-        className="rounded-full shadow-md"
-      />
-    </Link>
-  );
-
   const loggedInDisplay = loggedIn ? (
-    <Link href="/api/auth/logout">Logout</Link>
+    <Link href="/api/auth/logout" className="button-secondary">
+      Logout
+    </Link>
   ) : (
-    <Link href="/api/auth/login">Login</Link>
+    <Link href="/api/auth/login" className="button-primary">
+      Login
+    </Link>
   );
 
   const userLinkDisplay =
@@ -81,34 +98,30 @@ export default function Header() {
   ));
 
   return (
-    <header className="p-4 w-full">
-      <div className="wrapper flex items-center justify-between">
+    <header
+      className="md:py-[20px] md:px-[50px] lg:px-[100px] w-full"
+      style={isVisible ? { top: "0" } : { top: "-150px" }}
+    >
+      <nav className="flex items-center justify-between">
         {/* Screens less than 640px wide */}
-        <nav className="sm:hidden">
+        <div className="sm:hidden">
           <DropDownSelector icon="☰">
             {genericLinkDisplay}
             {userLinkDisplay}
           </DropDownSelector>
-        </nav>
-
-        <nav className="flex flex-col">
-          <Link href="/">
-            <h1 className="text-3xl font-medium tracking-tight">
-              Spirit Search
-            </h1>
-          </Link>
-
-          {/* Screens 640px and wider */}
-          <div className="hidden sm:flex gap-4 mt-2 font-medium">
-            {genericLinkDisplay}
-            {userLinkDisplay}
-          </div>
-        </nav>
-        <div className="flex flex-col justify-center">
-          {userDisplay}
-          {loggedInDisplay}
         </div>
-      </div>
+        <Link href="/">
+          <h1 className="text-3xl font-medium tracking-tight">Spirit Search</h1>
+        </Link>
+
+        {/* Screens 640px and wider */}
+        <div className="hidden sm:flex gap-[10px] font-medium">
+          {genericLinkDisplay}
+          {userLinkDisplay}
+        </div>
+
+        <div className="flex flex-col justify-center">{loggedInDisplay}</div>
+      </nav>
     </header>
   );
 }

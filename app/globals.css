@@ -2,24 +2,159 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --primary: #151515;
+    --primary-dark: rgba(0, 0, 0, 0.5);
+    --secondary: #FFDF64;
+    --secondary-bright: hsl(48, 100%, 90%);
+    --text-primary: #CCC;
+    --text-secondary: var(--primary);
+    --button-padding-x: 20px;
+    --button-padding-y: 10px;
+    --button-padding: var(--button-padding-y) var(--button-padding-x);
+    --hover-arrow-start-distance: -40px;
+    --hover-arrow-end-distance: var(--button-padding-x);
+    --hover-arrow-move-distance: calc(var(--hover-arrow-end-distance) - var(--hover-arrow-start-distance));
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--primary);
+}
+
+h3,
+p,
+a,
+button {
+    font-weight: 400;
+}
+
+a,
+button,
+img {
+    /* This is the same as rounded-lg in tailwindcss */
+    border-radius: 0.5rem;
+}
+
+.largeImg {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    min-height: 250px;
+}
+
+nav a,
+button {
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+header {
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 0 10px var(--primary-dark);
+    transition: top 0.3s;
+}
+
 header,
 footer {
-    background-color: #333;
-    color: #eee;
+    background-color: var(--primary);
 }
 
+header,
+footer,
 main {
-    color: #333;
-}
-
-.wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
+    color: var(--text-primary);
 }
 
 .hidden {
     display: none;
 }
+
+nav a {
+    border: 1px solid transparent;
+}
+
+a {
+    position: relative;
+    transition: color 0.5s, background-color 0.5s, padding 0.3s;
+}
+
+nav .button-primary:after,
+nav .button-secondary:after {
+    content: '>';
+    position: absolute;
+    opacity: 0;
+    top: 10px;
+    right: var(--hover-arrow-start-distance);
+    transition: opacity 0.3s, right 0.3s;
+}
+
+nav .button-primary:hover:after,
+nav .button-secondary:hover:after {
+    opacity: 1;
+    right: var(--hover-arrow-end-distance);
+}
+
+nav .button-primary:hover,
+nav .button-secondary:hover {
+    padding-right: calc(var(--hover-arrow-move-distance));
+}
+
+.button-primary.outside-nav:hover {
+    background-color: var(--primary);
+    border: 1px solid var(--secondary);
+    color: var(--text-primary);
+}
+
+.button-secondary.outside-nav:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.button-primary,
+.button-secondary {
+    padding: var(--button-padding);
+    /* overflow hidden to hide the arrow when the button is no longer hovered */
+    overflow: hidden;
+    border: 1px solid transparent;
+    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
+}
+
+.button-secondary,
+.button-tertiary {
+    color: var(--text-primary);
+}
+
+.button-primary,
+.button-tertiary.active {
+    color: var(--primary);
+}
+
+.button-primary {
+    background-color: var(--secondary);
+}
+
+.button-secondary {
+    background-color: transparent;
+    border: 1px solid var(--secondary);
+}
+
+.button-tertiary {
+    background-color: var(--primary);
+}
+
+.button-tertiary.active,
+.button-tertiary:hover {
+    background-color: var(--text-primary);
+    color: var(--primary);
+}
+
 
 @layer utilities {
     .text-balance {
