@@ -5,7 +5,7 @@ interface HeroSectionProps {
   heading: string;
   pText: string;
   bgImage: StaticImageData;
-  buttons?: { text: string; href: string }[];
+  buttons?: { text: string; href?: string; onClick?: Function }[];
   fgImage?: string;
   fgImageAlt?: string;
   textAlignment?: "left" | "center";
@@ -52,7 +52,12 @@ export default function HeroSection({
             let btnClass =
               index % 2 === 0 ? "button-primary" : "button-secondary";
             return (
-              <Link key={index} className={`${btnClass}`} href={button.href}>
+              <Link
+                key={index}
+                className={`${btnClass}`}
+                href={button.href ? button.href : "#"}
+                onClick={() => (button.onClick ? button.onClick() : undefined)}
+              >
                 {button.text}
               </Link>
             );

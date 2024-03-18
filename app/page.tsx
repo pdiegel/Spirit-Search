@@ -104,7 +104,7 @@ export default function Home() {
   );
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-accent">
+    <main className="flex min-h-screen flex-col items-center">
       <HeroSection
         heading="Discover Your Next Favorite Cocktail"
         pText="Explore a world of cocktails tailored to your taste. Use your own ingredients to search and find your perfect mix, from timeless classics to innovative modern twists. Your adventure in flavor starts now."
