@@ -104,7 +104,7 @@ export default function Header() {
     >
       <nav className="flex items-center justify-between">
         {/* Screens less than 640px wide */}
-        <div className="sm:hidden">
+        <div className={`${loggedIn ? "lg:hidden" : "sm:hidden"}`}>
           <DropDownSelector icon="☰">
             {genericLinkDisplay}
             {userLinkDisplay}
@@ -115,7 +115,11 @@ export default function Header() {
         </Link>
 
         {/* Screens 640px and wider */}
-        <div className="hidden sm:flex gap-[10px] font-medium">
+        <div
+          className={`hidden ${
+            loggedIn ? "lg:flex" : "sm:flex"
+          } gap-[10px] font-medium`}
+        >
           {genericLinkDisplay}
           {userLinkDisplay}
         </div>
