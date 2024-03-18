@@ -16,7 +16,7 @@ export default function CocktailGrid({
 }) {
   const { user } = useUser();
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {cocktails.map((cocktail: Cocktail) => {
         return (
           <div

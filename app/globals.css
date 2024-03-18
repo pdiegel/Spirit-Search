@@ -149,8 +149,10 @@ nav .button-secondary:hover {
     background-color: var(--primary);
 }
 
-.button-tertiary.active {
+.button-tertiary.active,
+.button-tertiary:hover {
     background-color: var(--text-primary);
+    color: var(--primary);
 }
 
 

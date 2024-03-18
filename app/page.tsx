@@ -23,6 +23,7 @@ export interface User {
 // 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
 const numCocktailsToDisplay = 12;
 const cocktailDbClient = new CocktailDbClient();
+const cocktailCategoryOptions = ["Popular", "New", "Random"];
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
@@ -35,18 +36,9 @@ export default function Home() {
   } as User);
   const [cocktailFilter, setCocktailFilter] = useState("");
   const [error, setError] = useState("");
+  const [cocktailCategory, setCocktailCategory] = useState("Popular");
 
   useEffect(() => {
-    fetch("/api/cocktails")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.length === 0) {
-          setError("Error fetching cocktails");
-        }
-        setCocktails(data);
-      });
-
     if (user?.sub) {
       getUserData(user.sub).then((data) => {
         delete data._id;
@@ -58,6 +50,23 @@ export default function Home() {
   useEffect(() => {
     setLowerCocktailIndex(0);
   }, [cocktails]);
+
+  useEffect(() => {
+    fetch(`/api/cocktails/category?category=${cocktailCategory}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.length === 0) {
+          setError("Error fetching cocktails");
+        }
+        setCocktails(data);
+      });
+  }, [cocktailCategory]);
 
   const handlePrevious = (): void => {
     setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
@@ -137,50 +146,65 @@ export default function Home() {
           ]}
           textAlignment="center"
         />
-        <div className="flex flex-col">
-          {filteredCocktails.length > 0 && (
-            <CocktailGrid
-              cocktails={filteredCocktails.slice(
-                lowerCocktailIndex,
-                lowerCocktailIndex + numCocktailsToDisplay
-              )}
-              favoriteCocktails={userData.favoriteCocktails}
-              onFavorite={handleFavorite}
-            />
-          )}
-        </div>
-        {/* Pagination buttons */}
-        <div className="flex justify-between w-full my-4">
-          <button
-            onClick={handlePrevious}
-            disabled={lowerCocktailIndex < numCocktailsToDisplay}
-            className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav"
-          >
-            Previous
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={
-              lowerCocktailIndex >
-              filteredCocktails.length - numCocktailsToDisplay
-            }
-            className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav"
-          >
-            Next
-          </button>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-center w-full gap-2">
+            {cocktailCategoryOptions.map((category) => (
+              <button
+                key={category}
+                className={`button-tertiary ${
+                  cocktailCategory === category ? "active" : ""
+                }`}
+                onClick={() => setCocktailCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-col">
+            {filteredCocktails.length > 0 && (
+              <CocktailGrid
+                cocktails={filteredCocktails.slice(
+                  lowerCocktailIndex,
+                  lowerCocktailIndex + numCocktailsToDisplay
+                )}
+                favoriteCocktails={userData.favoriteCocktails}
+                onFavorite={handleFavorite}
+              />
+            )}
+          </div>
+          {/* Pagination buttons */}
+          <div className="flex justify-between w-full gap-4">
+            <button
+              onClick={handlePrevious}
+              disabled={lowerCocktailIndex < numCocktailsToDisplay}
+              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={
+                lowerCocktailIndex >
+                filteredCocktails.length - numCocktailsToDisplay
+              }
+              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </GenericSection>
       <div className="w-full">
         <input
           type="text"
-          className="px-2 py-1 rounded-md mt-2 mb-2 border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
+          className="px-2 py-1 rounded-md border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
           onChange={(e) => setCocktailFilter(e.target.value)}
           value={cocktailFilter}
           placeholder="Search for a cocktail"
         />
         <button
           onClick={() => setCocktailFilter("")}
-          className="bg-red-500 text-white px-2 py-1 ml-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
+          className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
         >
           Clear
         </button>

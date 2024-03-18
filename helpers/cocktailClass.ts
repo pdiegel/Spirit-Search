@@ -228,4 +228,52 @@ export class CocktailDbClient {
       return {} as Ingredient;
     }
   }
+
+  async fetchPopularCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/popular.php`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async fetchNewCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/latest.php`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async fetchRandomCocktails(): Promise<Cocktail[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/randomselection.php`, {
+        next: { revalidate: this.revalidateSeconds },
+      });
+      const data = await response.json();
+      if (data.drinks.length === 0) {
+        return [];
+      }
+      return this.formatCocktails(data.drinks);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
 }
