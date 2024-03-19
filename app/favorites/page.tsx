@@ -8,12 +8,6 @@ import { Cocktail } from "@/interfaces/cocktails";
 import CocktailGrid from "@/components/cocktailGrid";
 import Loading from "@/components/loading";
 import GenericError from "@/components/errors/genericError";
-import GenericSection from "@/components/genericSection";
-import HeroSection from "@/components/heroSection";
-import FavoritesImg from "@/public/heroImages/favorites.jpg";
-import { CocktailDbClient } from "@/helpers/cocktailClass";
-
-const cocktailDbClient = new CocktailDbClient();
 
 export default function FavoriteCocktailsPage() {
   const { user, isLoading } = useUser();
@@ -44,10 +38,20 @@ export default function FavoriteCocktailsPage() {
   }, [user]);
 
   const handleFavorite = (cocktailId: string): void => {
-    const newUserData = cocktailDbClient.handleFavoriteCocktail(
-      cocktailId,
-      userData
-    );
+    let newUserData;
+    if (userData.favoriteCocktails.includes(cocktailId)) {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: userData.favoriteCocktails.filter(
+          (id) => id !== cocktailId
+        ),
+      };
+    } else {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
+      };
+    }
 
     setUserData(newUserData);
     updateUserData(newUserData);
@@ -60,26 +64,16 @@ export default function FavoriteCocktailsPage() {
     return <GenericError text={error} />;
   }
 
-  const favoriteCocktails = cocktails.filter((cocktail: Cocktail) =>
-    userData.favoriteCocktails.includes(cocktail.cocktailId)
-  );
-
   return (
-    <main className="flex flex-col min-h-screen items-center">
-      <HeroSection
-        heading="My Favorites"
-        bgImage={FavoritesImg}
-        textAlignment="center"
+    <main className="flex min-h-screen flex-col items-center p-4 bg-accent w-full wrapper">
+      <h1 className="text-3xl font-bold mb-6 mt-2">Your Favorite Cocktails</h1>
+      <CocktailGrid
+        cocktails={cocktails.filter((cocktail) =>
+          userData.favoriteCocktails.includes(cocktail.cocktailId)
+        )}
+        favoriteCocktails={userData.favoriteCocktails}
+        onFavorite={handleFavorite}
       />
-      <GenericSection darkBgColor>
-        <CocktailGrid
-          cocktails={favoriteCocktails}
-          favoriteCocktails={userData.favoriteCocktails}
-          onFavorite={handleFavorite}
-          hasSearchBar
-          hasFilters
-        />
-      </GenericSection>
     </main>
   );
 }
