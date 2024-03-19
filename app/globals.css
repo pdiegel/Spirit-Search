@@ -140,7 +140,7 @@ nav .button-secondary:after {
 }
 
 .button-category.active {
-    background-color: var(--secondary);
+    background-color: var(--secondary-bright);
 }
 
 @layer utilities {
@@ -169,6 +169,6 @@ nav .button-secondary:after {
     }
 
     .button-category:hover {
-        background-color: var(--secondary);
+        background-color: var(--secondary-bright);
     }
 }
