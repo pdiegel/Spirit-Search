@@ -7,6 +7,7 @@ import { Cocktail } from "@/interfaces/cocktails";
 import FilterSideBar, { FilterOptions } from "./filterSideBar";
 import { MouseEvent, useEffect, useState } from "react";
 import SearchBar from "./searchBar";
+import PlaceHolderImg from "@/public/cocktailPlaceholder.svg";
 
 // 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
 const numCocktailsToDisplay = 12;
@@ -170,15 +171,13 @@ export default function CocktailGrid({
   return (
     <div className="flex gap-4 mx-auto">
       {hasFilters && (
-        <div>
-          <FilterSideBar
-            filterOptions={filterOptions}
-            onFilterClear={() => selectAllFilters()}
-            selectedFilters={selectedFilters}
-          />
-        </div>
+        <FilterSideBar
+          filterOptions={filterOptions}
+          onFilterClear={() => selectAllFilters()}
+          selectedFilters={selectedFilters}
+        />
       )}
-      <div className="flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-4">
         {hasSearchBar && (
           <SearchBar
             onSearch={(search) => setCocktailFilter(search)}
@@ -210,13 +209,15 @@ export default function CocktailGrid({
                   href={`/cocktails/${cocktail.cocktailId}`}
                   className="flex text-center"
                 >
-                  <div className="relative w-full">
+                  <div className="relative">
                     <Image
                       src={cocktail.thumbnail + "/preview"}
                       alt={cocktail.name}
-                      height={160}
-                      width={160}
-                      className="rounded-xl w-full"
+                      height={200}
+                      width={200}
+                      className="rounded-xl"
+                      placeholder="blur"
+                      blurDataURL={PlaceHolderImg.src}
                     />
                     <p className="absolute bottom-0 text-center p-1 w-full text-balance break-words font-medium bg-primaryDark/70 rounded-b-xl shadow-md z-10">
                       {cocktail.name}
