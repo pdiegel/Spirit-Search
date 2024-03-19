@@ -127,7 +127,7 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mx-auto">
             {filteredCocktails.length > 0 && (
               <CocktailGrid
                 cocktails={filteredCocktails}

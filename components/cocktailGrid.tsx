@@ -191,56 +191,58 @@ export default function CocktailGrid({
             onClear={() => setCocktailFilter("")}
           />
         )}
-        <div
-          className={`gap-4 mx-auto ${
-            slicedDisplayCocktails.length > 1 ? "grid grid-cols-2" : ""
-          } ${slicedDisplayCocktails.length > 2 ? "xl:grid-cols-3" : ""} ${
-            slicedDisplayCocktails.length > 3 ? "2xl:grid-cols-4" : ""
-          }`}
-        >
-          {slicedDisplayCocktails.map((cocktail: Cocktail) => {
-            return (
-              <div
-                className="hover:scale-105 transition-scale duration-200 relative"
-                key={cocktail.cocktailId}
-              >
-                {user && (
-                  <Image
-                    onClick={() => onFavorite!(cocktail.cocktailId)}
-                    src={
-                      favoriteCocktails?.includes(cocktail.cocktailId)
-                        ? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Star%2A.svg/300px-Star%2A.svg.png?20070316213819"
-                        : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/800px-Five-pointed_star.svg.png"
-                    }
-                    alt={cocktail.name}
-                    height={30}
-                    width={30}
-                    className="absolute top-1/8 left-1/8 cursor-pointer hover:scale-150 transition-transform duration-200 bg-white/70 rounded-full p-1 z-10"
-                  />
-                )}
-                <Link
-                  href={`/cocktails/${cocktail.cocktailId}`}
-                  className="flex text-center"
+        {slicedDisplayCocktails.length && (
+          <div
+            className={`gap-4 mx-auto ${
+              slicedDisplayCocktails.length > 1 ? "grid grid-cols-2" : ""
+            } ${slicedDisplayCocktails.length > 2 ? "xl:grid-cols-3" : ""} ${
+              slicedDisplayCocktails.length > 3 ? "2xl:grid-cols-4" : ""
+            }`}
+          >
+            {slicedDisplayCocktails.map((cocktail: Cocktail) => {
+              return (
+                <div
+                  className="hover:scale-105 transition-scale duration-200 relative"
+                  key={cocktail.cocktailId}
                 >
-                  <div className="relative">
+                  {user && (
                     <Image
-                      src={cocktail.thumbnail + "/preview"}
+                      onClick={() => onFavorite!(cocktail.cocktailId)}
+                      src={
+                        favoriteCocktails?.includes(cocktail.cocktailId)
+                          ? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Star%2A.svg/300px-Star%2A.svg.png?20070316213819"
+                          : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/800px-Five-pointed_star.svg.png"
+                      }
                       alt={cocktail.name}
-                      height={200}
-                      width={200}
-                      className="rounded-lg"
-                      placeholder="blur"
-                      blurDataURL={PlaceHolderImg.src}
+                      height={30}
+                      width={30}
+                      className="absolute top-1/8 left-1/8 cursor-pointer hover:scale-150 transition-transform duration-200 bg-white/70 rounded-full p-1 z-10"
                     />
-                    <p className="absolute bottom-0 text-center p-1 w-full text-balance break-words font-medium bg-primaryDark/70 rounded-b-lg shadow-md">
-                      {cocktail.name}
-                    </p>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                  )}
+                  <Link
+                    href={`/cocktails/${cocktail.cocktailId}`}
+                    className="flex text-center"
+                  >
+                    <div className="relative">
+                      <Image
+                        src={cocktail.thumbnail + "/preview"}
+                        alt={cocktail.name}
+                        height={200}
+                        width={200}
+                        className="rounded-lg"
+                        placeholder="blur"
+                        blurDataURL={PlaceHolderImg.src}
+                      />
+                      <p className="absolute bottom-0 text-center p-1 w-full text-balance break-words font-medium bg-primaryDark/70 rounded-b-lg shadow-md">
+                        {cocktail.name}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
         {/* Pagination buttons */}
         <div className="flex justify-between w-full gap-4">
           <button

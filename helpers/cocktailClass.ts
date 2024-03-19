@@ -12,6 +12,8 @@ const profanityWords = new Set([
   "sex",
   "kiss me",
   "orgasm",
+  "nipple",
+  "bitch",
 ]);
 
 export class CocktailDbClient {
