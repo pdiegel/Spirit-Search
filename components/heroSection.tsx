@@ -3,8 +3,8 @@ import Link from "next/link";
 
 interface HeroSectionProps {
   heading: string;
-  pText: string;
   bgImage: StaticImageData;
+  pText?: string;
   buttons?: { text: string; href?: string; onClick?: Function }[];
   fgImage?: string;
   fgImageAlt?: string;
@@ -13,8 +13,8 @@ interface HeroSectionProps {
 
 export default function HeroSection({
   heading,
-  pText,
   bgImage,
+  pText,
   buttons,
   fgImage,
   fgImageAlt,
