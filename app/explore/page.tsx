@@ -10,19 +10,14 @@ import ExploreImg from "@/public/heroImages/explore.jpg";
 import { useRouter } from "next/navigation";
 import GenericSection from "@/components/genericSection";
 import CocktailGrid from "@/components/cocktailGrid";
-import SearchBar from "@/components/searchBar";
-import FilterSideBar, { FilterOptions } from "@/components/filterSideBar";
 import { updateUserData } from "@/helpers/mongodbFuncs";
+import Loading from "@/components/loading";
 
 const cocktailDbClient = new CocktailDbClient();
-
-// 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
-const numCocktailsToDisplay = 12;
 
 export default function Page() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const { user, isLoading } = useUser();
-  const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const router = useRouter();
   const [userData, setUserData] = useState({
     sub: user?.sub,
@@ -73,14 +68,12 @@ export default function Page() {
     updateUserData(newUserData);
   };
 
-  const onFilterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
-  };
-
   let filteredCocktails = cocktailDbClient.filterCocktails(
     userData.allergies,
     cocktails
   );
+
+  if (isLoading || cocktails.length === 0) return <Loading />;
 
   return (
     <main className="flex flex-col min-h-screen items-center">

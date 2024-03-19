@@ -151,7 +151,11 @@ export default function CocktailGrid({
     return filters;
   };
 
-  const displayCocktails = filteredCocktails.slice(
+  const displayCocktails = filteredCocktails.filter((cocktail) =>
+    cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
+  );
+
+  const slicedDisplayCocktails = displayCocktails.slice(
     lowerCocktailIndex,
     lowerCocktailIndex + numCocktailsToDisplay
   );
@@ -171,7 +175,7 @@ export default function CocktailGrid({
   };
 
   return (
-    <div className="flex flex-col gap-4 mx-auto sm:flex-row">
+    <div className="w-full flex flex-col gap-4 mx-auto sm:flex-row">
       {hasFilters && (
         <FilterSideBar
           filterOptions={filterOptions}
@@ -180,7 +184,7 @@ export default function CocktailGrid({
           bgColor={darkFilterBarBg ? "bg-primaryDark/50" : undefined}
         />
       )}
-      <div className="w-full flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {hasSearchBar && (
           <SearchBar
             onSearch={(search) => setCocktailFilter(search)}
@@ -188,11 +192,13 @@ export default function CocktailGrid({
           />
         )}
         <div
-          className={`grid grid-cols-2 gap-4 ${
-            displayCocktails.length > 2 ? "xl:grid-cols-3" : ""
-          } ${displayCocktails.length > 3 ? "2xl:grid-cols-4" : ""}`}
+          className={`gap-4 mx-auto ${
+            slicedDisplayCocktails.length > 1 ? "grid grid-cols-2" : ""
+          } ${slicedDisplayCocktails.length > 2 ? "xl:grid-cols-3" : ""} ${
+            slicedDisplayCocktails.length > 3 ? "2xl:grid-cols-4" : ""
+          }`}
         >
-          {displayCocktails.map((cocktail: Cocktail) => {
+          {slicedDisplayCocktails.map((cocktail: Cocktail) => {
             return (
               <div
                 className="hover:scale-105 transition-scale duration-200 relative"

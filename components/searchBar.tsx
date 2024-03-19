@@ -23,7 +23,13 @@ export default function SearchBar({
         value={searchKey}
         placeholder="Search"
       />
-      <button onClick={() => onClear()} className="button-category">
+      <button
+        onClick={() => {
+          onClear();
+          setSearchKey("");
+        }}
+        className="button-category"
+      >
         Clear
       </button>
     </div>
