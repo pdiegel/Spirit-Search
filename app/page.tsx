@@ -60,20 +60,10 @@ export default function Home() {
   }, [cocktailCategory]);
 
   const handleFavorite = (cocktailId: string): void => {
-    let newUserData;
-    if (userData.favoriteCocktails.includes(cocktailId)) {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: userData.favoriteCocktails.filter(
-          (id) => id !== cocktailId
-        ),
-      };
-    } else {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
-      };
-    }
+    const newUserData = cocktailDbClient.handleFavoriteCocktail(
+      cocktailId,
+      userData
+    );
 
     setUserData(newUserData);
     updateUserData(newUserData);

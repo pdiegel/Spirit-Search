@@ -12,6 +12,7 @@ import GenericSection from "@/components/genericSection";
 import CocktailGrid from "@/components/cocktailGrid";
 import SearchBar from "@/components/searchBar";
 import FilterSideBar, { FilterOptions } from "@/components/filterSideBar";
+import { updateUserData } from "@/helpers/mongodbFuncs";
 
 const cocktailDbClient = new CocktailDbClient();
 
@@ -23,7 +24,6 @@ export default function Page() {
   const { user, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const router = useRouter();
-
   const [userData, setUserData] = useState({
     sub: user?.sub,
     allergies: [] as string[],
@@ -64,20 +64,13 @@ export default function Page() {
   };
 
   const handleFavorite = (cocktailId: string): void => {
-    let newUserData;
-    if (userData.favoriteCocktails.includes(cocktailId)) {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: userData.favoriteCocktails.filter(
-          (id) => id !== cocktailId
-        ),
-      };
-    } else {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
-      };
-    }
+    const newUserData = cocktailDbClient.handleFavoriteCocktail(
+      cocktailId,
+      userData
+    );
+
+    setUserData(newUserData);
+    updateUserData(newUserData);
   };
 
   const onFilterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -99,7 +92,7 @@ export default function Page() {
           { text: "Surprise Me!", onClick: redirectToRandomCocktailPage },
         ]}
       />
-      <GenericSection>
+      <GenericSection darkBgColor>
         <CocktailGrid
           cocktails={filteredCocktails}
           favoriteCocktails={userData.favoriteCocktails}

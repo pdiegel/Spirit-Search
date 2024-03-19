@@ -19,7 +19,7 @@ export default function FilterSideBar({
   filterOptions,
   onFilterClear,
   selectedFilters = {} as selectedFilterType,
-  bgColor = "bg-primaryDark",
+  bgColor = "bg-primary",
 }: {
   filterOptions: FilterOptions[];
   onFilterClear: MouseEventHandler<HTMLButtonElement>;

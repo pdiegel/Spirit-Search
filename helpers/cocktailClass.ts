@@ -1,3 +1,4 @@
+import { User } from "@/app/page";
 import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
 import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
@@ -318,5 +319,24 @@ export class CocktailDbClient {
     }
 
     return {} as Cocktail;
+  }
+
+  handleFavoriteCocktail(cocktailId: string, userData: User): User {
+    let newUserData;
+    if (userData.favoriteCocktails.includes(cocktailId)) {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: userData.favoriteCocktails.filter(
+          (id) => id !== cocktailId
+        ),
+      };
+    } else {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
+      };
+    }
+
+    return newUserData;
   }
 }

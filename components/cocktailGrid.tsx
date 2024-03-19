@@ -28,12 +28,14 @@ export default function CocktailGrid({
   onFavorite,
   hasFilters = false,
   hasSearchBar = false,
+  darkFilterBarBg = false,
 }: {
   cocktails: Cocktail[];
   favoriteCocktails?: string[];
   onFavorite?: Function;
   hasFilters?: boolean;
   hasSearchBar?: boolean;
+  darkFilterBarBg?: boolean;
 }) {
   const { user } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
@@ -175,6 +177,7 @@ export default function CocktailGrid({
           filterOptions={filterOptions}
           onFilterClear={() => selectAllFilters()}
           selectedFilters={selectedFilters}
+          bgColor={darkFilterBarBg ? "bg-primaryDark/50" : undefined}
         />
       )}
       <div className="w-full flex flex-col gap-4">
@@ -184,7 +187,11 @@ export default function CocktailGrid({
             onClear={() => setCocktailFilter("")}
           />
         )}
-        <div className="grid grid-cols-2 gap-4 xl:grid-cols-3 2xl:grid-cols-4">
+        <div
+          className={`grid grid-cols-2 gap-4 ${
+            displayCocktails.length > 2 ? "xl:grid-cols-3" : ""
+          } ${displayCocktails.length > 3 ? "2xl:grid-cols-4" : ""}`}
+        >
           {displayCocktails.map((cocktail: Cocktail) => {
             return (
               <div
