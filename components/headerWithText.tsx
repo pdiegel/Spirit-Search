@@ -27,7 +27,7 @@ export default function HeaderWithText({
     <div
       className={`text-${textAlignment} flex flex-col gap-[${gapAmounts["small"]}px] sm:gap-[${gapAmounts["medium"]}px] lg:gap-[${gapAmounts["large"]}px]`}
     >
-      <h2 className="text-3xl font-semibold">{header}</h2>
+      <h2 className="text-3xl">{header}</h2>
       {textContents.map((text, index) => (
         <div
           key={index}

@@ -99,7 +99,7 @@ export default function Home() {
         <HeaderWithText
           header="How It Works"
           textContents={[
-            "Choose Your Spirit - Select from a wide range of spirits to find cocktails you’ll love.",
+            "Choose Your Spirit - Select from a wide range of spirits to find cocktails you`ll love.",
             "Discover Recipes - Explore curated cocktail recipes that match your taste.",
             "Mix & Enjoy - Follow easy steps to mix your perfect cocktail at home.",
           ]}

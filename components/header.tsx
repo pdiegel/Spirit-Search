@@ -18,7 +18,6 @@ export const genericLinks: HomeLink[] = [
 ];
 
 export const loggedInLinks: HomeLink[] = [
-  { href: "/user", label: "Profile", ariaLabel: "User profile" },
   { href: "/favorites", label: "Favorites", ariaLabel: "Favorite spirits" },
 ];
 

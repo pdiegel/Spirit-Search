@@ -4,7 +4,7 @@ import Link from "next/link";
 interface HeroSectionProps {
   heading: string;
   bgImage: StaticImageData;
-  pText?: string;
+  pText?: string[] | string;
   buttons?: { text: string; href?: string; onClick?: Function }[];
   fgImage?: string;
   fgImageAlt?: string;
@@ -36,11 +36,21 @@ export default function HeroSection({
               {heading}
             </h1>
           )}
-          {pText && (
-            <p className="text-base sm:max-w-[400px] lg:max-w-[50ch]">
-              {pText}
-            </p>
-          )}
+          {pText &&
+            (typeof pText === "object" ? (
+              pText.map((text, index) => (
+                <p
+                  key={index}
+                  className="text-base sm:max-w-[400px] lg:max-w-[50ch]"
+                >
+                  {text}
+                </p>
+              ))
+            ) : (
+              <p className="text-base sm:max-w-[400px] lg:max-w-[50ch]">
+                {pText}
+              </p>
+            ))}
         </div>
         {fgImage && (
           <Image
