@@ -11,8 +11,8 @@ export default function DropDownSelector({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="text-text">
-      <button className="text-2xl" onClick={() => setIsOpen(!isOpen)}>
+    <div>
+      <button className="text-2xl pl-0" onClick={() => setIsOpen(!isOpen)}>
         <span>{icon}</span>
       </button>
       <motion.div
@@ -23,7 +23,7 @@ export default function DropDownSelector({
       >
         <button
           className="self-start text-2xl w-8, h-8 p-2"
-          onClick={() => setIsOpen(false)}
+          onClick={() => setIsOpen(!isOpen)}
         >
           X
         </button>

@@ -18,7 +18,7 @@ export default function IngredientPicker({
       <motion.button
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
+        className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition-colors duration-300 ease-in-out"
         key={index + "picked"}
         onClick={() => onSelection(ingredient)}
       >
@@ -35,7 +35,7 @@ export default function IngredientPicker({
       <motion.button
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition-colors duration-300 ease-in-out"
+        className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600 transition-colors duration-300 ease-in-out"
         key={index + "available"}
         onClick={() => onSelection(ingredient)}
       >
@@ -72,13 +72,13 @@ export default function IngredientPicker({
         <div className="flex gap-2 mb-4">
           <input
             type="text"
-            className="max-w-40 px-2 py-1 rounded-md border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
+            className="max-w-40 px-2 py-1 rounded-lg border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
             placeholder="Search ingredients"
             value={ingredientFilter}
             onChange={(e) => setIngredientFilter(e.target.value)}
           />
           <button
-            className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
+            className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition-colors duration-300 ease-in-out"
             onClick={() => setIngredientFilter("")}
           >
             Clear

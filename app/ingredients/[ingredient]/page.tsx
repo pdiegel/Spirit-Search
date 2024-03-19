@@ -43,7 +43,7 @@ export default function Page({ params }: { params: { ingredient: string } }) {
             alt={ingredientData.name}
             height={250}
             width={250}
-            className="rounded-md"
+            className="rounded-lg"
             priority
           />
         )}

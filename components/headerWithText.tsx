@@ -42,7 +42,7 @@ export default function HeaderWithText({
           {subHeadings.length > index && (
             <h3 className="text-2xl">{subHeadings[index]}</h3>
           )}
-          <p className="text-base max-w-[50ch]">{text}</p>
+          <p className="text-base max-w-[65ch]">{text}</p>
         </div>
       ))}
     </div>

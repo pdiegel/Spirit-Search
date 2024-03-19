@@ -169,7 +169,7 @@ export default function CocktailGrid({
   };
 
   return (
-    <div className="flex gap-4 mx-auto">
+    <div className="flex flex-col gap-4 mx-auto sm:flex-row">
       {hasFilters && (
         <FilterSideBar
           filterOptions={filterOptions}
@@ -184,7 +184,7 @@ export default function CocktailGrid({
             onClear={() => setCocktailFilter("")}
           />
         )}
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-3 2xl:grid-cols-4">
           {displayCocktails.map((cocktail: Cocktail) => {
             return (
               <div
@@ -215,11 +215,11 @@ export default function CocktailGrid({
                       alt={cocktail.name}
                       height={200}
                       width={200}
-                      className="rounded-xl"
+                      className="rounded-lg"
                       placeholder="blur"
                       blurDataURL={PlaceHolderImg.src}
                     />
-                    <p className="absolute bottom-0 text-center p-1 w-full text-balance break-words font-medium bg-primaryDark/70 rounded-b-xl shadow-md z-10">
+                    <p className="absolute bottom-0 text-center p-1 w-full text-balance break-words font-medium bg-primaryDark/70 rounded-b-lg shadow-md">
                       {cocktail.name}
                     </p>
                   </div>

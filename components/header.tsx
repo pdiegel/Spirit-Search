@@ -99,10 +99,10 @@ export default function Header() {
 
   return (
     <header
-      className="md:py-[20px] md:px-[50px] lg:px-[100px] w-full"
+      className="md:py-[20px] sm:px-[50px] w-full"
       style={isVisible ? { top: "0" } : { top: "-150px" }}
     >
-      <nav className="flex items-center justify-between">
+      <nav className="flex items-center justify-between lg:px-12 max-w-[1100px] mx-auto">
         {/* Screens less than 640px wide */}
         <div className={`${loggedIn ? "lg:hidden" : "sm:hidden"}`}>
           <DropDownSelector icon="☰">

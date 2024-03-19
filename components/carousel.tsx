@@ -64,7 +64,7 @@ export default function Carousel({
               alt={cocktail.name}
               height={250}
               width={250}
-              className="rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
+              className="rounded-lg hover:scale-105 transition-transform duration-200 ease-in-out"
             />
             <h3 className="text-center font-medium mt-2 h-20">
               {cocktail.name}

@@ -25,6 +25,7 @@ body {
     background-color: var(--primary);
 }
 
+
 h3,
 p,
 a,
@@ -84,7 +85,6 @@ nav a {
 
 a {
     position: relative;
-    transition: color 0.5s, background-color 0.5s, padding 0.3s;
 }
 
 nav .button-primary:after,
@@ -97,21 +97,10 @@ nav .button-secondary:after {
     transition: opacity 0.3s, right 0.3s;
 }
 
-nav .button-primary:hover:after,
-nav .button-secondary:hover:after {
-    opacity: 1;
-    right: var(--hover-arrow-end-distance);
-}
-
-nav .button-primary:hover,
-nav .button-secondary:hover {
-    padding-right: calc(var(--hover-arrow-move-distance));
-}
-
 .button-primary,
 .button-secondary {
     padding: var(--button-padding);
-    /* overflow hidden to hide the arrow when the button is no longer hovered */
+    /* to hide the arrow when the button is no longer hovered */
     overflow: hidden;
     border: 1px solid transparent;
 }
@@ -139,8 +128,7 @@ nav .button-secondary:hover {
     background-color: var(--primary);
 }
 
-.button-tertiary.active,
-.button-tertiary:hover {
+.button-tertiary.active {
     background-color: var(--text-primary);
     color: var(--primary);
 }
@@ -151,15 +139,36 @@ nav .button-secondary:hover {
     border: 1px solid transparent;
 }
 
-.button-category.active,
-.button-category:hover {
+.button-category.active {
     background-color: var(--secondary);
 }
-
-
 
 @layer utilities {
     .text-balance {
         text-wrap: balance;
+    }
+}
+
+/* Hover media query to avoid hover styles on touch devices */
+@media (hover: hover) {
+
+    nav .button-primary:hover:after,
+    nav .button-secondary:hover:after {
+        opacity: 1;
+        right: var(--hover-arrow-end-distance);
+    }
+
+    nav .button-primary:hover,
+    nav .button-secondary:hover {
+        padding-right: calc(var(--hover-arrow-move-distance));
+    }
+
+    .button-tertiary:hover {
+        background-color: var(--text-primary);
+        color: var(--primary);
+    }
+
+    .button-category:hover {
+        background-color: var(--secondary);
     }
 }
