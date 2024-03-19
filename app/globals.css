@@ -47,9 +47,11 @@ img {
 }
 
 nav a,
-button {
+button,
+input {
     cursor: pointer;
     padding: 5px 10px;
+    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
 }
 
 header {
@@ -123,7 +125,6 @@ nav .button-secondary:hover {
     /* overflow hidden to hide the arrow when the button is no longer hovered */
     overflow: hidden;
     border: 1px solid transparent;
-    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
 }
 
 .button-secondary,
@@ -155,14 +156,18 @@ nav .button-secondary:hover {
     color: var(--primary);
 }
 
-.button-category {
+.button-category,
+.button-category.active:hover {
     background-color: var(--text-primary);
     color: var(--primary);
+    border: 1px solid transparent;
 }
 
-.button-category.active {
-    background-color: var(--secondary-bright);
+.button-category.active,
+.button-category:hover {
+    background-color: var(--secondary);
 }
+
 
 
 @layer utilities {

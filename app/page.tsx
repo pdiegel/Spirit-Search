@@ -20,15 +20,12 @@ export interface User {
   favoriteCocktails: string[];
 }
 
-// 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
-const numCocktailsToDisplay = 12;
 const cocktailDbClient = new CocktailDbClient();
 const cocktailCategoryOptions = ["Popular", "New", "Random"];
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const { user, isLoading } = useUser();
-  const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [userData, setUserData] = useState({
     sub: user?.sub,
     allergies: [] as string[],
@@ -47,10 +44,6 @@ export default function Home() {
   }, [user]);
 
   useEffect(() => {
-    setLowerCocktailIndex(0);
-  }, [cocktails]);
-
-  useEffect(() => {
     fetch(`/api/cocktails/category?category=${cocktailCategory}`, {
       method: "GET",
       headers: {
@@ -65,14 +58,6 @@ export default function Home() {
         setCocktails(data);
       });
   }, [cocktailCategory]);
-
-  const handlePrevious = (): void => {
-    setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
-  };
-
-  const handleNext = (): void => {
-    setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
-  };
 
   const handleFavorite = (cocktailId: string): void => {
     let newUserData;
@@ -155,34 +140,11 @@ export default function Home() {
           <div className="flex flex-col">
             {filteredCocktails.length > 0 && (
               <CocktailGrid
-                cocktails={filteredCocktails.slice(
-                  lowerCocktailIndex,
-                  lowerCocktailIndex + numCocktailsToDisplay
-                )}
+                cocktails={filteredCocktails}
                 favoriteCocktails={userData.favoriteCocktails}
                 onFavorite={handleFavorite}
               />
             )}
-          </div>
-          {/* Pagination buttons */}
-          <div className="flex justify-between w-full gap-4">
-            <button
-              onClick={handlePrevious}
-              disabled={lowerCocktailIndex < numCocktailsToDisplay}
-              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={
-                lowerCocktailIndex >
-                filteredCocktails.length - numCocktailsToDisplay
-              }
-              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
-            >
-              Next
-            </button>
           </div>
         </div>
       </GenericSection>

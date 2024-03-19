@@ -9,8 +9,9 @@ import HeroSection from "@/components/heroSection";
 import ExploreImg from "@/public/heroImages/explore.jpg";
 import { useRouter } from "next/navigation";
 import GenericSection from "@/components/genericSection";
-import FilterDropDown from "@/components/filterDropDown";
 import CocktailGrid from "@/components/cocktailGrid";
+import SearchBar from "@/components/searchBar";
+import FilterSideBar, { FilterOptions } from "@/components/filterSideBar";
 
 const cocktailDbClient = new CocktailDbClient();
 
@@ -19,7 +20,6 @@ const numCocktailsToDisplay = 12;
 
 export default function Page() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
-  const [cocktailFilter, setCocktailFilter] = useState("");
   const { user, isLoading } = useUser();
   const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const router = useRouter();
@@ -89,12 +89,6 @@ export default function Page() {
     cocktails
   );
 
-  filteredCocktails = cocktailFilter
-    ? filteredCocktails.filter((cocktail) =>
-        cocktail.name.toLowerCase().includes(cocktailFilter.toLowerCase())
-      )
-    : filteredCocktails;
-
   return (
     <main className="flex flex-col min-h-screen items-center">
       <HeroSection
@@ -106,37 +100,14 @@ export default function Page() {
         ]}
       />
       <GenericSection>
-        <FilterDropDown
-          heading="Alcoholic"
-          filters={["Yes", "No"]}
-          selectedFilters={["Yes"]}
-          onFilterClick={onFilterClick}
-        />
         <CocktailGrid
-          cocktails={filteredCocktails.slice(
-            lowerCocktailIndex,
-            lowerCocktailIndex + numCocktailsToDisplay
-          )}
+          cocktails={filteredCocktails}
           favoriteCocktails={userData.favoriteCocktails}
           onFavorite={handleFavorite}
+          hasSearchBar
+          hasFilters
         />
       </GenericSection>
-
-      <div className="w-full">
-        <input
-          type="text"
-          className="px-2 py-1 rounded-md border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ease-in-out"
-          onChange={(e) => setCocktailFilter(e.target.value)}
-          value={cocktailFilter}
-          placeholder="Search for a cocktail"
-        />
-        <button
-          onClick={() => setCocktailFilter("")}
-          className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out"
-        >
-          Clear
-        </button>
-      </div>
     </main>
   );
 }

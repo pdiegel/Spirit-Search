@@ -5,16 +5,19 @@ import { MouseEventHandler } from "react";
 import DownArrowImg from "@/public/arrowDown.svg";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { selectedFilterType } from "./cocktailGrid";
 
 export default function FilterDropDown({
+  parameter,
   heading,
   filters,
   selectedFilters,
   onFilterClick,
 }: {
+  parameter: string;
   heading: string;
   filters: string[];
-  selectedFilters: string[];
+  selectedFilters: selectedFilterType;
   onFilterClick: MouseEventHandler<HTMLButtonElement>;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -23,9 +26,12 @@ export default function FilterDropDown({
   };
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex gap-8" onClick={expandDiv}>
-        <h3 className="text-3xl font-semibold">{heading}</h3>
+    <div className={`flex flex-col gap-4 w-full`}>
+      <div
+        className="flex justify-between gap-8 cursor-pointer"
+        onClick={expandDiv}
+      >
+        <h3 className="text-2xl font-semibold">{heading}</h3>
         <Image
           src={DownArrowImg}
           height={30}
@@ -44,15 +50,17 @@ export default function FilterDropDown({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-2 max-h-40 overflow-y-auto"
             layout
           >
             {filters.map((filter) => {
-              const active = selectedFilters.includes(filter);
+              const active = selectedFilters[parameter]?.has(filter);
               return (
                 <li key={filter}>
                   <button
-                    onClick={onFilterClick}
+                    data-filter-type={parameter}
+                    data-filter-value={filter}
+                    onClick={(e) => onFilterClick(e)}
                     className={`button-category ${active ? "active" : ""}`}
                   >
                     {filter}
