@@ -20,15 +20,12 @@ export interface User {
   favoriteCocktails: string[];
 }
 
-// 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
-const numCocktailsToDisplay = 12;
 const cocktailDbClient = new CocktailDbClient();
 const cocktailCategoryOptions = ["Popular", "New", "Random"];
 
 export default function Home() {
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
   const { user, isLoading } = useUser();
-  const [lowerCocktailIndex, setLowerCocktailIndex] = useState(0);
   const [userData, setUserData] = useState({
     sub: user?.sub,
     allergies: [] as string[],
@@ -47,10 +44,6 @@ export default function Home() {
   }, [user]);
 
   useEffect(() => {
-    setLowerCocktailIndex(0);
-  }, [cocktails]);
-
-  useEffect(() => {
     fetch(`/api/cocktails/category?category=${cocktailCategory}`, {
       method: "GET",
       headers: {
@@ -59,7 +52,6 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.length === 0) {
           setError("Error fetching cocktails");
         }
@@ -67,29 +59,11 @@ export default function Home() {
       });
   }, [cocktailCategory]);
 
-  const handlePrevious = (): void => {
-    setLowerCocktailIndex(lowerCocktailIndex - numCocktailsToDisplay);
-  };
-
-  const handleNext = (): void => {
-    setLowerCocktailIndex(lowerCocktailIndex + numCocktailsToDisplay);
-  };
-
   const handleFavorite = (cocktailId: string): void => {
-    let newUserData;
-    if (userData.favoriteCocktails.includes(cocktailId)) {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: userData.favoriteCocktails.filter(
-          (id) => id !== cocktailId
-        ),
-      };
-    } else {
-      newUserData = {
-        ...userData,
-        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
-      };
-    }
+    const newUserData = cocktailDbClient.handleFavoriteCocktail(
+      cocktailId,
+      userData
+    );
 
     setUserData(newUserData);
     updateUserData(newUserData);
@@ -105,7 +79,7 @@ export default function Home() {
   );
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-accent">
+    <main className="flex min-h-screen flex-col items-center">
       <HeroSection
         heading="Discover Your Next Favorite Cocktail"
         pText="Explore a world of cocktails tailored to your taste. Use your own ingredients to search and find your perfect mix, from timeless classics to innovative modern twists. Your adventure in flavor starts now."
@@ -153,37 +127,14 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mx-auto">
             {filteredCocktails.length > 0 && (
               <CocktailGrid
-                cocktails={filteredCocktails.slice(
-                  lowerCocktailIndex,
-                  lowerCocktailIndex + numCocktailsToDisplay
-                )}
+                cocktails={filteredCocktails}
                 favoriteCocktails={userData.favoriteCocktails}
                 onFavorite={handleFavorite}
               />
             )}
-          </div>
-          {/* Pagination buttons */}
-          <div className="flex justify-between w-full gap-4">
-            <button
-              onClick={handlePrevious}
-              disabled={lowerCocktailIndex < numCocktailsToDisplay}
-              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={
-                lowerCocktailIndex >
-                filteredCocktails.length - numCocktailsToDisplay
-              }
-              className="disabled:pointer-events-none disabled:opacity-50 button-primary outside-nav w-full"
-            >
-              Next
-            </button>
           </div>
         </div>
       </GenericSection>

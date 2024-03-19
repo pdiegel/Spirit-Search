@@ -1,5 +1,10 @@
 import type { Config } from "tailwindcss";
 
+const primary = "#151515";
+const primaryDark = "#000";
+const secondary = "#FFDF64";
+const textPrimary = "#CCC";
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,19 +14,27 @@ const config: Config = {
   theme: {
     extend: {
       backgroundColor: {
-        primary: "#151515",
-        primaryDark: "#000",
-        secondary: "#FFDF64",
-        textPrimary: "#CCC",
+        primary: primary,
+        primaryDark: primaryDark,
+        secondary: secondary,
+        textPrimary: textPrimary,
       },
       borderColor: {
-        primaryDark: "#000",
+        primaryDark: primaryDark,
       },
       maxHeight: {
         "80vh": "80vh",
       },
       textColor: {
-        primary: "#151515",
+        primary: primary,
+      },
+      ringColor: {
+        secondary: secondary,
+      },
+      maxWidth: {
+        "1/3": "33.333333%",
+        "1/4": "25%",
+        "1/5": "20%",
       },
       plugins: [],
     },

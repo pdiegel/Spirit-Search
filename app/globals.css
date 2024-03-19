@@ -25,6 +25,7 @@ body {
     background-color: var(--primary);
 }
 
+
 h3,
 p,
 a,
@@ -47,9 +48,11 @@ img {
 }
 
 nav a,
-button {
+button,
+input {
     cursor: pointer;
     padding: 5px 10px;
+    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
 }
 
 header {
@@ -82,7 +85,6 @@ nav a {
 
 a {
     position: relative;
-    transition: color 0.5s, background-color 0.5s, padding 0.3s;
 }
 
 nav .button-primary:after,
@@ -95,35 +97,12 @@ nav .button-secondary:after {
     transition: opacity 0.3s, right 0.3s;
 }
 
-nav .button-primary:hover:after,
-nav .button-secondary:hover:after {
-    opacity: 1;
-    right: var(--hover-arrow-end-distance);
-}
-
-nav .button-primary:hover,
-nav .button-secondary:hover {
-    padding-right: calc(var(--hover-arrow-move-distance));
-}
-
-.button-primary.outside-nav:hover {
-    background-color: var(--primary);
-    border: 1px solid var(--secondary);
-    color: var(--text-primary);
-}
-
-.button-secondary.outside-nav:hover {
-    background-color: var(--secondary);
-    color: var(--primary);
-}
-
 .button-primary,
 .button-secondary {
     padding: var(--button-padding);
-    /* overflow hidden to hide the arrow when the button is no longer hovered */
+    /* to hide the arrow when the button is no longer hovered */
     overflow: hidden;
     border: 1px solid transparent;
-    transition: border 0.3s, padding 0.3s, color 0.3s, background-color 0.3s;
 }
 
 .button-secondary,
@@ -149,15 +128,47 @@ nav .button-secondary:hover {
     background-color: var(--primary);
 }
 
-.button-tertiary.active,
-.button-tertiary:hover {
+.button-tertiary.active {
     background-color: var(--text-primary);
     color: var(--primary);
 }
 
+.button-category {
+    background-color: var(--text-primary);
+    color: var(--primary);
+    border: 1px solid transparent;
+}
+
+.button-category.active {
+    background-color: var(--secondary-bright);
+}
 
 @layer utilities {
     .text-balance {
         text-wrap: balance;
+    }
+}
+
+/* Hover media query to avoid hover styles on touch devices */
+@media (hover: hover) {
+
+    nav .button-primary:hover:after,
+    nav .button-secondary:hover:after {
+        opacity: 1;
+        right: var(--hover-arrow-end-distance);
+    }
+
+    nav .button-primary:hover,
+    nav .button-secondary:hover {
+        padding-right: calc(var(--hover-arrow-move-distance));
+    }
+
+    .button-tertiary:hover {
+        background-color: var(--text-primary);
+        color: var(--primary);
+    }
+
+    .button-category:hover {
+        background-color: var(--secondary-bright);
     }
 }

@@ -58,7 +58,7 @@ export default function Page({ params }: { params: { cocktail: string } }) {
           alt={cocktailData.name}
           height={250}
           width={250}
-          className="rounded-md shadow-md"
+          className="rounded-lg shadow-md"
           priority
         />
       </div>

@@ -99,12 +99,12 @@ export default function Header() {
 
   return (
     <header
-      className="md:py-[20px] md:px-[50px] lg:px-[100px] w-full"
+      className="md:py-[20px] sm:px-[50px] w-full"
       style={isVisible ? { top: "0" } : { top: "-150px" }}
     >
-      <nav className="flex items-center justify-between">
+      <nav className="flex items-center justify-between lg:px-12 max-w-[1100px] mx-auto">
         {/* Screens less than 640px wide */}
-        <div className="sm:hidden">
+        <div className={`${loggedIn ? "lg:hidden" : "sm:hidden"}`}>
           <DropDownSelector icon="☰">
             {genericLinkDisplay}
             {userLinkDisplay}
@@ -115,7 +115,11 @@ export default function Header() {
         </Link>
 
         {/* Screens 640px and wider */}
-        <div className="hidden sm:flex gap-[10px] font-medium">
+        <div
+          className={`hidden ${
+            loggedIn ? "lg:flex" : "sm:flex"
+          } gap-[10px] font-medium`}
+        >
           {genericLinkDisplay}
           {userLinkDisplay}
         </div>

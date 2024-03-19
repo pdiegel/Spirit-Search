@@ -1,3 +1,4 @@
+import { User } from "@/app/page";
 import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
 import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
@@ -11,6 +12,8 @@ const profanityWords = new Set([
   "sex",
   "kiss me",
   "orgasm",
+  "nipple",
+  "bitch",
 ]);
 
 export class CocktailDbClient {
@@ -295,5 +298,47 @@ export class CocktailDbClient {
       console.error(error);
       return [];
     }
+  }
+
+  async fetchSingleRandomCocktail(): Promise<Cocktail> {
+    let cocktailName = "";
+
+    while (!cocktailName || profanityWords.has(cocktailName.toLowerCase())) {
+      try {
+        const response = await fetch(`${this.baseUrl}/random.php`, {
+          // Always fetch new data for random cocktails
+          next: { revalidate: 1 },
+        });
+        const data = await response.json();
+        if (data.drinks.length === 0) {
+          return {} as Cocktail;
+        }
+        return this.formatCocktails(data.drinks)[0];
+      } catch (error) {
+        console.error(error);
+        return {} as Cocktail;
+      }
+    }
+
+    return {} as Cocktail;
+  }
+
+  handleFavoriteCocktail(cocktailId: string, userData: User): User {
+    let newUserData;
+    if (userData.favoriteCocktails.includes(cocktailId)) {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: userData.favoriteCocktails.filter(
+          (id) => id !== cocktailId
+        ),
+      };
+    } else {
+      newUserData = {
+        ...userData,
+        favoriteCocktails: [...userData.favoriteCocktails, cocktailId],
+      };
+    }
+
+    return newUserData;
   }
 }
