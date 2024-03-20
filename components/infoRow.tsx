@@ -6,8 +6,11 @@ export default function InfoRow({
   value: string;
 }) {
   return (
-    <p>
-      <span className="font-bold">{label}:</span> {value}
-    </p>
+    <div className="flex flex-wrap md:flex-col gap-2 md:gap-0 bg-primaryDark/50 p-4 rounded-lg items-center">
+      <p className="text-xl font-semibold">
+        {label} <span className="md:hidden"> - </span>
+      </p>
+      <p>{value}</p>
+    </div>
   );
 }
