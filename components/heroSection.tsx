@@ -8,6 +8,7 @@ interface HeroSectionProps {
   buttons?: { text: string; href?: string; onClick?: Function }[];
   fgImage?: string;
   fgImageAlt?: string;
+  fgIsIngredient?: boolean;
   textAlignment?: "left" | "center";
 }
 
@@ -18,6 +19,7 @@ export default function HeroSection({
   buttons,
   fgImage,
   fgImageAlt,
+  fgIsIngredient = false,
   textAlignment = "left",
 }: HeroSectionProps): JSX.Element {
   const itemAlignment = textAlignment === "center" ? "items-center" : "";
@@ -56,7 +58,9 @@ export default function HeroSection({
           <Image
             src={fgImage}
             alt={fgImageAlt || "Foreground Image"}
-            className="sm:w-[300px] sm:h-[300px]"
+            className={`sm:w-[300px] sm:h-[300px] ${
+              fgIsIngredient ? "rounded-lg bg-primary p-4" : ""
+            }`}
             width={200}
             height={200}
           />

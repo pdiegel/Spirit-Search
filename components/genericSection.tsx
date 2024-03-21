@@ -18,7 +18,7 @@ export default function GenericSection({
       <div
         className={`grid grid-cols-1 mx-auto max-w-[1100px] lg:px-12 ${
           containsImg ? "sm:grid-cols-2" : ""
-        } gap-[20px] sm:gap-[30px] lg:gap-[40px] items-center ${
+        } gap-8 items-center ${
           containsImg ? "sm:flex-row sm:gap-[70px] lg:gap-[90px]" : ""
         }  `}
       >

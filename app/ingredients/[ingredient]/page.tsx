@@ -1,16 +1,31 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading";
 import { Ingredient } from "@/interfaces/ingredient";
 import InfoRow from "@/components/infoRow";
-import Carousel from "@/components/carousel";
 import { Cocktail } from "@/interfaces/cocktails";
 import CocktailGrid from "@/components/cocktailGrid";
+import ShelfImg from "@/public/heroImages/shelf.png";
+import HeroSection from "@/components/heroSection";
+import GenericSection from "@/components/genericSection";
+import HeaderWithText from "@/components/headerWithText";
+import { breakTextIntoTwoSentenceChunks } from "@/helpers/textFuncs";
+import { User } from "@/app/page";
+import { updateUserData } from "@/helpers/mongodbFuncs";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { CocktailDbClient } from "@/helpers/cocktailClass";
+
+const cocktailDbClient = new CocktailDbClient();
 
 export default function Page({ params }: { params: { ingredient: string } }) {
   const [ingredientData, setIngredientData] = useState({} as Ingredient);
   const [cocktails, setCocktails] = useState([] as Cocktail[]);
+  const { user, isLoading } = useUser();
+  const [userData, setUserData] = useState({
+    sub: user?.sub,
+    allergies: [] as string[],
+    favoriteCocktails: [] as string[],
+  } as User);
 
   const loading = Object.keys(ingredientData).length === 0;
 
@@ -28,52 +43,77 @@ export default function Page({ params }: { params: { ingredient: string } }) {
       });
   }, [params]);
 
-  if (loading) {
+  const handleFavorite = (cocktailId: string): void => {
+    const newUserData = cocktailDbClient.handleFavoriteCocktail(
+      cocktailId,
+      userData
+    );
+
+    setUserData(newUserData);
+    updateUserData(newUserData);
+  };
+
+  let filteredCocktails = cocktailDbClient.filterCocktails(
+    userData.allergies,
+    cocktails
+  );
+
+  if (loading || isLoading) {
     return <Loading />;
   }
 
   return (
-    <main className="flex flex-col p-4 bg-accent text-text w-full wrapper">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold my-2">{ingredientData.name} </h1>
+    <main className="flex flex-col min-h-screen items-center">
+      <HeroSection
+        heading={ingredientData.name}
+        bgImage={ShelfImg}
+        fgImage={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.name}.png`}
+        fgImageAlt={ingredientData.name}
+        textAlignment="center"
+        fgIsIngredient
+      />
 
-        {ingredientData.name && (
-          <Image
-            src={`https://www.thecocktaildb.com/images/ingredients/${ingredientData.name}.png`}
-            alt={ingredientData.name}
-            height={250}
-            width={250}
-            className="rounded-lg"
-            priority
-          />
-        )}
-      </div>
-      <div className="mb-6 w-full">
-        <h2 className="text-xl font-bold mb-2">Information</h2>
-        {ingredientData.containsAlcohol && (
+      <GenericSection darkBgColor>
+        <h2 className="text-3xl text-center">Quick Facts</h2>
+        <div
+          className={`flex flex-wrap gap-2 justify-center md:text-center md:flex-row  md:gap-4 md:mx-auto`}
+        >
           <InfoRow
             label="Contains Alcohol"
             value={ingredientData.containsAlcohol}
           />
-        )}
-        {ingredientData.type && (
           <InfoRow label="Category" value={ingredientData.type} />
-        )}
-      </div>
-      {ingredientData.description && (
-        <div className="w-full mb-6">
-          <h2 className="text-xl font-bold">Description</h2>(
-          <p>{ingredientData.description}</p>)
         </div>
-      )}
-      <div className="mb-6 text-ellipsis">
-        <h2 className="text-xl font-bold mb-2">Featured in</h2>
-        {cocktails.length > 3 ? (
-          <Carousel cocktails={cocktails} numItems={3} />
-        ) : (
-          <CocktailGrid cocktails={cocktails} />
-        )}
-      </div>
+      </GenericSection>
+
+      <GenericSection>
+        <div className="mx-auto">
+          <HeaderWithText
+            header="Description"
+            textContents={breakTextIntoTwoSentenceChunks(
+              ingredientData.description
+            )}
+          />
+        </div>
+      </GenericSection>
+
+      <GenericSection darkBgColor>
+        <div className="mx-auto flex flex-col gap-8">
+          <HeaderWithText
+            header="Featured Cocktails"
+            textContents={[
+              "Check out these cocktails that contain " + ingredientData.name,
+            ]}
+            textAlignment="center"
+          />
+          <CocktailGrid
+            cocktails={filteredCocktails}
+            favoriteCocktails={userData.favoriteCocktails}
+            onFavorite={handleFavorite}
+            hasSearchBar
+          />
+        </div>
+      </GenericSection>
     </main>
   );
 }
