@@ -51,7 +51,7 @@ export class CocktailDbClient {
     return ingredients.map((ingredient) => {
       return {
         ingredientId: ingredient.idIngredient,
-        abbreviation: ingredient.strABV,
+        alcoholByVolume: ingredient.strABV,
         containsAlcohol: ingredient.strAlcohol,
         description: ingredient.strDescription,
         name: ingredient.strIngredient,

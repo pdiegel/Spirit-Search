@@ -9,7 +9,7 @@ export interface OriginalIngredient {
 
 export interface Ingredient {
   ingredientId: string;
-  abbreviation: string;
+  alcoholByVolume: string;
   containsAlcohol: string;
   description: string;
   name: string;

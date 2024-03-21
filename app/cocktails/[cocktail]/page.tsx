@@ -81,7 +81,7 @@ export default function Page({ params }: { params: { cocktail: string } }) {
         textAlignment="center"
       />
       <GenericSection>
-        <h2 className="text-2xl text-center">Quick Facts</h2>
+        <h2 className="text-3xl text-center">Quick Facts</h2>
         <div
           className={`flex flex-wrap gap-2 justify-center md:text-center md:flex-row  md:gap-4 md:mx-auto`}
         >
@@ -100,17 +100,17 @@ export default function Page({ params }: { params: { cocktail: string } }) {
         </div>
       </GenericSection>
       <GenericSection darkBgColor>
-        <h2 className="text-2xl text-center">Ingredients List</h2>
+        <h2 className="text-3xl text-center">Ingredients List</h2>
         <IngredientRow ingredients={ingredients} />
       </GenericSection>
       <GenericSection>
-        <h2 className="text-2xl text-center">Preparation Instructions</h2>
+        <h2 className="text-3xl text-center">Preparation Instructions</h2>
         <p className="text-center max-w-[50ch] mx-auto">
           {cocktailData.instructions}
         </p>
       </GenericSection>
       <GenericSection darkBgColor>
-        <h2 className="text-2xl text-center">Explore Similar Cocktails</h2>
+        <h2 className="text-3xl text-center">Explore Similar Cocktails</h2>
         <div className="mx-auto">
           <CocktailGrid cocktails={similarCocktails} />
         </div>

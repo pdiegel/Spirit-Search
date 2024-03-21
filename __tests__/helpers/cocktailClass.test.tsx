@@ -367,7 +367,7 @@ test("fetchIngredientDataByName", async () => {
     description: mockIngredientData.ingredients[0].strDescription,
     type: mockIngredientData.ingredients[0].strType,
     containsAlcohol: mockIngredientData.ingredients[0].strAlcohol,
-    abbreviation: mockIngredientData.ingredients[0].strABV,
+    alcoholByVolume: mockIngredientData.ingredients[0].strABV,
   } as Ingredient);
   expect(fetchMock).toHaveBeenCalledTimes(1);
   expect(fetchMock.mock.calls[0][0]).toEqual(
@@ -405,9 +405,9 @@ test("fetchIngredientDataById response error", async () => {
 
 test("filterCocktails by allergies", () => {
   const result = cocktailDBClient.filterCocktails(
-    [],
     mockAllergies,
-    expectedOutput
+    expectedOutput,
+    []
   );
 
   const expected = expectedOutput.filter(
@@ -418,16 +418,16 @@ test("filterCocktails by allergies", () => {
 });
 
 test("filterCocktails by allergies with no cocktails", () => {
-  const result = cocktailDBClient.filterCocktails([], mockAllergies, []);
+  const result = cocktailDBClient.filterCocktails(mockAllergies, [], []);
 
   expect(result).toEqual([]);
 });
 
 test("filterCocktails by ingredients", () => {
   const result = cocktailDBClient.filterCocktails(
-    mockIngredients,
     [],
-    expectedOutput
+    expectedOutput,
+    mockIngredients
   );
 
   const expected = expectedOutput.filter((c) =>
