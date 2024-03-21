@@ -41,8 +41,6 @@ describe("Header Component", () => {
     });
     render(<Header />);
 
-    // Assert that the user image is rendered
-    expect(screen.getByAltText(useUser().user.nickname)).toBeInTheDocument();
     // Assert that the logout link is rendered
     expect(screen.getByText("Logout")).toBeInTheDocument();
     // Assert that the login link is not rendered
@@ -58,52 +56,7 @@ describe("Header Component", () => {
       expect(screen.getAllByText(link.label)[0]).toBeInTheDocument();
     });
 
-    const image = screen.getByRole("img", {
-      name: useUser().user.nickname,
-    }) as HTMLImageElement;
-    expect(image).toBeInTheDocument();
-    // Assert the user picture is rendered. Image component changes the src
-    // attribute, so we need to remove the '/' from the user picture path
-    expect(image.src).toContain(useUser().user.picture.split("/").pop());
-    expect(image).toHaveAttribute("alt", useUser().user.nickname);
-
     // Assert the user picture is a link to the user profile
-  });
-
-  it("renders correctly for loggen-in users with no nickname", async () => {
-    // Provide the mock implementation for this test case
-    useUser.mockReturnValue({
-      user: { picture: "/test.jpg" },
-    });
-    render(<Header />);
-
-    // Assert that the user image is rendered
-    const image = screen.getByRole("img", {
-      name: "User",
-    }) as HTMLImageElement;
-    expect(image).toBeInTheDocument();
-    // Assert the user picture is rendered. Image component changes the src
-    // attribute, so we need to remove the '/' from the user picture path
-    expect(image.src).toContain(useUser().user.picture.split("/").pop());
-    expect(image).toHaveAttribute("alt", useUser().user.nickname);
-  });
-
-  it("renders correctly for loggen-in users with no picture", async () => {
-    // Provide the mock implementation for this test case
-    useUser.mockReturnValue({
-      user: { nickname: "testUser" },
-    });
-    render(<Header />);
-
-    // Assert that the user image is rendered
-    const image = screen.getByRole("img", {
-      name: useUser().user.nickname,
-    }) as HTMLImageElement;
-    expect(image).toBeInTheDocument();
-    // Assert the user picture is rendered. Image component changes the src
-    // attribute, so we need to remove the '/' from the user picture path
-    expect(image.src).toEqual(testingBasePath);
-    expect(image).toHaveAttribute("alt", useUser().user.nickname);
   });
 
   it("renders correctly for logged-out users", async () => {
@@ -115,8 +68,6 @@ describe("Header Component", () => {
 
     // Assert that the login link is rendered
     expect(screen.getByText("Login")).toBeInTheDocument();
-    // Assert that the user image is not rendered
-    expect(screen.queryByText("User")).not.toBeInTheDocument();
     // Assert that the logout link is not rendered
     expect(screen.queryByText("Logout")).not.toBeInTheDocument();
 
@@ -152,12 +103,12 @@ describe("Header Component", () => {
     );
   });
 
-  test('with the pathname of "/user"', () => {
+  test('with the pathname of "/favorites"', () => {
     useUser.mockReturnValue({
       user: { nickname: "testUser", picture: "/test.jpg" },
     });
-    mockUsePathname.mockImplementation(() => "/user");
-    expect(mockUsePathname()).toBe("/user");
+    mockUsePathname.mockImplementation(() => "/favorites");
+    expect(mockUsePathname()).toBe("/favorites");
 
     render(<Header />);
     // Assert that the user link is active
