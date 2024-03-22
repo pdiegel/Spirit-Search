@@ -80,10 +80,10 @@ export class CocktailDbClient {
     const uniqueCocktails = new Set();
 
     return cocktails.filter((cocktail) => {
-      if (uniqueCocktails.has(cocktail.name.toLowerCase())) {
+      if (uniqueCocktails.has(cocktail.cocktailId.toLowerCase())) {
         return false;
       }
-      uniqueCocktails.add(cocktail.name.toLowerCase());
+      uniqueCocktails.add(cocktail.cocktailId.toLowerCase());
       return true;
     });
   }
@@ -145,6 +145,8 @@ export class CocktailDbClient {
         ingredients
       );
     }
+
+    filteredCocktails = this.filterOutDuplicateCocktails(filteredCocktails);
 
     filteredCocktails = filteredCocktails.filter((cocktail) => {
       const wordsInName = cocktail.name.toLowerCase().split(/\s+/); // Split by any whitespace

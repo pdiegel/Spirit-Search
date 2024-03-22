@@ -57,7 +57,12 @@ export default function Page({ params }: { params: { cocktail: string } }) {
             },
           });
           const data = await response.json();
-          data.forEach((cocktail: Cocktail) => allCocktails.add(cocktail));
+          data.forEach((cocktail: Cocktail) => {
+            // Don't include the current cocktail in the similar cocktails list
+            if (cocktail.cocktailId !== cocktailData.cocktailId) {
+              allCocktails.add(cocktail);
+            }
+          });
         }
         // Convert the JSON strings back to objects and update state
         setSimilarCocktails(Array.from(allCocktails));

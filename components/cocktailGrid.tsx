@@ -8,9 +8,12 @@ import FilterSideBar, { FilterOptions } from "./filterSideBar";
 import { MouseEvent, useEffect, useState } from "react";
 import SearchBar from "./searchBar";
 import PlaceHolderImg from "@/public/cocktailPlaceholder.svg";
+import { CocktailDbClient } from "@/helpers/cocktailClass";
 
 // 12 is a Multiple of 2, 3, 4 and 6. Creates a nice grid layout
 const numCocktailsToDisplay = 12;
+
+const cocktailDbClient = new CocktailDbClient();
 
 const filters = {
   Category: new Set<string>(),
@@ -122,6 +125,12 @@ export default function CocktailGrid({
         }
       });
     });
+
+    filteredCocktails = cocktailDbClient.filterCocktails(
+      [],
+      filteredCocktails,
+      []
+    );
 
     setFilteredCocktails(filteredCocktails);
   }, [cocktails, selectedFilters]);
