@@ -86,13 +86,15 @@ export default function Page() {
         ]}
       />
       <GenericSection darkBgColor>
-        <CocktailGrid
-          cocktails={filteredCocktails}
-          favoriteCocktails={userData.favoriteCocktails}
-          onFavorite={handleFavorite}
-          hasSearchBar
-          hasFilters
-        />
+        <div className="mx-auto">
+          <CocktailGrid
+            cocktails={filteredCocktails}
+            favoriteCocktails={userData.favoriteCocktails}
+            onFavorite={handleFavorite}
+            hasSearchBar
+            hasFilters
+          />
+        </div>
       </GenericSection>
     </main>
   );
