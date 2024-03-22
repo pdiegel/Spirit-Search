@@ -82,7 +82,7 @@ export default function Page({ params }: { params: { ingredient: string } }) {
         fgIsIngredient
       />
 
-      <GenericSection darkBgColor>
+      <GenericSection darkBgColor={ingredientData.description !== null}>
         <h2 className="text-3xl text-center">Quick Facts</h2>
         <div
           className={`flex flex-wrap gap-2 justify-center md:text-center md:flex-row  md:gap-4 md:mx-auto`}
@@ -116,7 +116,7 @@ export default function Page({ params }: { params: { ingredient: string } }) {
         </GenericSection>
       )}
 
-      <GenericSection darkBgColor={ingredientData.description !== null}>
+      <GenericSection darkBgColor>
         <div className="mx-auto flex flex-col gap-8">
           <HeaderWithText
             header="Featured Cocktails"
