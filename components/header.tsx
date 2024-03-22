@@ -57,13 +57,13 @@ export default function Header() {
   const loggedIn = user ? true : false;
 
   const loggedInDisplay = loggedIn ? (
-    <Link href="/api/auth/logout" className="button-secondary">
+    <a href="/api/auth/logout" className="button-secondary">
       Logout
-    </Link>
+    </a>
   ) : (
-    <Link href="/api/auth/login" className="button-primary">
+    <a href="/api/auth/login" className="button-primary">
       Login
-    </Link>
+    </a>
   );
 
   const userLinkDisplay =
