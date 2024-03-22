@@ -2,13 +2,16 @@
 
 ## Introduction
 
-SpiritSearch is a web application designed to help users discover cocktail recipes based on the ingredients they have at home. Built with React and Next.js, it offers a simple yet powerful way to explore a wide range of cocktail options without the need for a fully stocked bar. It uses the [TheCocktailDB](https://www.thecocktaildb.com/) API to provide a comprehensive list of cocktails and ingredients.
+SpiritSearch is a web application designed to help users discover new cocktail recipes. Built with React and Next.js, it offers a simple yet powerful way to explore a wide range of cocktail options without the need for a fully stocked bar. It uses the [TheCocktailDB](https://www.thecocktaildb.com/) API to provide a comprehensive list of cocktails and ingredients. Users can search for cocktails by name, category, glass type, or alcholic content.
 
 ## Features
 
-- **Ingredient-Based Search:** Users can enter the ingredients they have and find cocktail recipes that use them.
-- **Detailed Pages:** Each ingredient and cocktail has its own page with detailed information and a carousel feature for related cocktails.
-- **Favorites System:** Users can save their favorite recipes for easy access later.
+- Search for cocktails by name, category, glass type, or alcoholic content
+- View detailed information about each cocktail, including ingredients and instructions
+- Dive into individual ingredients to see what other cocktails they are used in
+- Save cocktails to a favorites list for easy access
+- View a random cocktail for inspiration
+- Responsive design for mobile, tablet, and desktop
 
 ## Live Demo
 
