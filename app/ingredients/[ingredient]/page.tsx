@@ -91,7 +91,9 @@ export default function Page({ params }: { params: { ingredient: string } }) {
             label="Contains Alcohol"
             value={ingredientData.containsAlcohol}
           />
-          <InfoRow label="Category" value={ingredientData.type} />
+          {ingredientData.type && (
+            <InfoRow label="Category" value={ingredientData.type} />
+          )}
           {ingredientData.alcoholByVolume && (
             <InfoRow
               label="Alcohol By Volume"
@@ -114,7 +116,7 @@ export default function Page({ params }: { params: { ingredient: string } }) {
         </GenericSection>
       )}
 
-      <GenericSection darkBgColor>
+      <GenericSection darkBgColor={ingredientData.description !== null}>
         <div className="mx-auto flex flex-col gap-8">
           <HeaderWithText
             header="Featured Cocktails"

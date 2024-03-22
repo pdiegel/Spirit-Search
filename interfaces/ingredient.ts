@@ -13,5 +13,5 @@ export interface Ingredient {
   containsAlcohol: string;
   description: string | null;
   name: string;
-  type: string;
+  type: string | null;
 }
