@@ -11,7 +11,7 @@ import GenericSection from "@/components/genericSection";
 import HeaderWithText from "@/components/headerWithText";
 import { breakTextIntoTwoSentenceChunks } from "@/helpers/textFuncs";
 import { User } from "@/app/page";
-import { updateUserData } from "@/helpers/mongodbFuncs";
+import { getUserData, updateUserData } from "@/helpers/mongodbFuncs";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { CocktailDbClient } from "@/helpers/cocktailClass";
 
@@ -26,6 +26,15 @@ export default function Page({ params }: { params: { ingredient: string } }) {
     allergies: [] as string[],
     favoriteCocktails: [] as string[],
   } as User);
+
+  useEffect(() => {
+    if (user?.sub) {
+      getUserData(user.sub).then((data) => {
+        delete data._id;
+        setUserData(data);
+      });
+    }
+  }, [user]);
 
   const loading = Object.keys(ingredientData).length === 0;
 
