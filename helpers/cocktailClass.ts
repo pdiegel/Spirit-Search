@@ -3,7 +3,7 @@ import { Cocktail, OriginalCocktail } from "@/interfaces/cocktails";
 import { Ingredient, OriginalIngredient } from "@/interfaces/ingredient";
 
 // Words that should not be included in any cocktail names
-const profanityWords = new Set([
+export const profanityWords = new Set([
   "fuck",
   "f**k",
   "ass",
@@ -316,6 +316,7 @@ export class CocktailDbClient {
         if (data.drinks.length === 0) {
           return {} as Cocktail;
         }
+        cocktailName = data.drinks[0].strDrink;
         return this.formatCocktails(data.drinks)[0];
       } catch (error) {
         console.error(error);
@@ -323,6 +324,7 @@ export class CocktailDbClient {
       }
     }
 
+    // This should only be reached if the maximum number of retries is reached
     return {} as Cocktail;
   }
 
