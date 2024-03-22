@@ -92,19 +92,27 @@ export default function Page({ params }: { params: { ingredient: string } }) {
             value={ingredientData.containsAlcohol}
           />
           <InfoRow label="Category" value={ingredientData.type} />
+          {ingredientData.alcoholByVolume && (
+            <InfoRow
+              label="Alcohol By Volume"
+              value={ingredientData.alcoholByVolume}
+            />
+          )}
         </div>
       </GenericSection>
 
-      <GenericSection>
-        <div className="mx-auto">
-          <HeaderWithText
-            header="Description"
-            textContents={breakTextIntoTwoSentenceChunks(
-              ingredientData.description
-            )}
-          />
-        </div>
-      </GenericSection>
+      {ingredientData.description && (
+        <GenericSection>
+          <div className="mx-auto">
+            <HeaderWithText
+              header="Description"
+              textContents={breakTextIntoTwoSentenceChunks(
+                ingredientData.description
+              )}
+            />
+          </div>
+        </GenericSection>
+      )}
 
       <GenericSection darkBgColor>
         <div className="mx-auto flex flex-col gap-8">
