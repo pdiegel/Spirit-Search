@@ -1,7 +1,8 @@
 import { Cocktail } from "@/interfaces/cocktails";
-import { CocktailDbClient } from "@/helpers/cocktailClass";
+import { CocktailDbClient, profanityWords } from "@/helpers/cocktailClass";
 import fetchMock from "jest-fetch-mock";
 import { Ingredient } from "@/interfaces/ingredient";
+import { User } from "@/app/page";
 
 beforeEach(() => {
   fetchMock.resetMocks();
@@ -18,6 +19,11 @@ const mockIngredients = ["Egg", "Gin"];
 const mockAllergies = ["Vodka", "Lemon"];
 const cocktailDBClient = new CocktailDbClient();
 const mockCocktailID = "123";
+const mockUserData = {
+  sub: "user-sub",
+  allergies: ["Vodka", "Lemon"],
+  favoriteCocktails: [],
+} as User;
 
 // Mock cocktails with duplicate entry for testing purposes
 const mockCocktails = {
@@ -403,6 +409,166 @@ test("fetchIngredientDataById response error", async () => {
   );
 });
 
+test("fetchPopularCocktails", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify(mockCocktails));
+
+  const resultPromise = cocktailDBClient.fetchPopularCocktails();
+
+  await expect(resultPromise).resolves.toEqual(expectedOutput);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/popular.php`
+  );
+});
+
+test("fetchPopularCocktails with no results found", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({ drinks: [] as Cocktail[] }));
+
+  const resultPromise = cocktailDBClient.fetchPopularCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/popular.php`
+  );
+});
+
+test("fetchPopularCocktails response error", async () => {
+  fetchMock.mockReject(new Error("API Error"));
+
+  const resultPromise = cocktailDBClient.fetchPopularCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/popular.php`
+  );
+});
+
+test("fetchNewCocktails", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify(mockCocktails));
+
+  const resultPromise = cocktailDBClient.fetchNewCocktails();
+
+  await expect(resultPromise).resolves.toEqual(expectedOutput);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/latest.php`
+  );
+});
+
+test("fetchNewCocktails with no results found", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({ drinks: [] as Cocktail[] }));
+
+  const resultPromise = cocktailDBClient.fetchNewCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/latest.php`
+  );
+});
+
+test("fetchNewCocktails response error", async () => {
+  fetchMock.mockReject(new Error("API Error"));
+
+  const resultPromise = cocktailDBClient.fetchNewCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/latest.php`
+  );
+});
+
+test("fetchRandomCocktails", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify(mockCocktails));
+
+  const resultPromise = cocktailDBClient.fetchRandomCocktails();
+
+  await expect(resultPromise).resolves.toEqual(expectedOutput);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/randomselection.php`
+  );
+});
+
+test("fetchRandomCocktails with no results found", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({ drinks: [] as Cocktail[] }));
+
+  const resultPromise = cocktailDBClient.fetchRandomCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/randomselection.php`
+  );
+});
+
+test("fetchRandomCocktails response error", async () => {
+  fetchMock.mockReject(new Error("API Error"));
+
+  const resultPromise = cocktailDBClient.fetchRandomCocktails();
+
+  await expect(resultPromise).resolves.toEqual([] as Cocktail[]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/randomselection.php`
+  );
+});
+
+test("fetchSingleRandomCocktail", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify(mockCocktails));
+
+  const resultPromise = cocktailDBClient.fetchSingleRandomCocktail();
+
+  await expect(resultPromise).resolves.toEqual(expectedOutput[0]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/random.php`
+  );
+});
+
+test("fetchSingleRandomCocktail with no results found", async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({ drinks: [] as Cocktail[] }));
+
+  const resultPromise = cocktailDBClient.fetchSingleRandomCocktail();
+
+  await expect(resultPromise).resolves.toEqual({} as Cocktail);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/random.php`
+  );
+});
+
+test("fetchSingleRandomCocktail response error", async () => {
+  fetchMock.mockReject(new Error("API Error"));
+
+  const resultPromise = cocktailDBClient.fetchSingleRandomCocktail();
+
+  await expect(resultPromise).resolves.toEqual({} as Cocktail);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/random.php`
+  );
+});
+
+test("fetchSingleRandomCocktail with profanity result", async () => {
+  fetchMock.mockResponseOnce(
+    JSON.stringify({
+      drinks: [{ strDrink: profanityWords.values().next() }],
+    })
+  );
+
+  const resultPromise = cocktailDBClient.fetchSingleRandomCocktail();
+
+  await expect(resultPromise).resolves.toEqual({} as Cocktail);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][0]).toEqual(
+    `https://www.thecocktaildb.com/api/json/v2/${API_KEY}/random.php`
+  );
+});
+
 test("filterCocktails by allergies", () => {
   const result = cocktailDBClient.filterCocktails(
     mockAllergies,
@@ -441,4 +607,42 @@ test("filterCocktails by ingredients with no cocktails", () => {
   const result = cocktailDBClient.filterCocktails(mockIngredients, [], []);
 
   expect(result).toEqual([]);
+});
+
+test("handleFavoriteCocktail", () => {
+  const mockCocktail = expectedOutput[0];
+
+  const result = cocktailDBClient.handleFavoriteCocktail(
+    mockCocktail.cocktailId,
+    mockUserData
+  );
+
+  const expectedUserData = {
+    ...mockUserData,
+    favoriteCocktails: [
+      ...mockUserData.favoriteCocktails,
+      mockCocktail.cocktailId,
+    ],
+  };
+
+  expect(result).toEqual(expectedUserData);
+});
+
+test("handleFavoriteCocktail to remove favorite", () => {
+  const mockCocktail = expectedOutput[0];
+
+  const result = cocktailDBClient.handleFavoriteCocktail(
+    mockCocktail.cocktailId,
+    {
+      ...mockUserData,
+      favoriteCocktails: [mockCocktail.cocktailId],
+    }
+  );
+
+  const expectedUserData = {
+    ...mockUserData,
+    favoriteCocktails: [],
+  };
+
+  expect(result).toEqual(expectedUserData);
 });
